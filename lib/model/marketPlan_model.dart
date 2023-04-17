@@ -3,7 +3,6 @@ class MarketPlanModel {
   int? idUser;
   String? nameMarket;
   List? expensesPlan;
-  String? createdPlan;
   double? limitValue; //LIMITE TOTAL
   double? availableLimit; //LIMITE DISPONÍVEL
   MarketPlanModel({
@@ -11,13 +10,12 @@ class MarketPlanModel {
     this.idUser,
     this.nameMarket,
     this.expensesPlan,
-    this.createdPlan,
     this.limitValue,
     this.availableLimit,
   });
 
   @override
   String toString() {
-    return 'MarketPlanModel(idMarketPlan: $idMarketPlan, idUser: $idUser, nameMarket: $nameMarket, expensesPlan: $expensesPlan, createdPlan: $createdPlan, limitValue: $limitValue, availableLimit: $availableLimit)';
+    return 'MarketPlanModel(idMarketPlan: $idMarketPlan, idUser: $idUser, nameMarket: $nameMarket, expensesPlan: $expensesPlan, limitValue: $limitValue, availableLimit: $availableLimit)';
   }
 }

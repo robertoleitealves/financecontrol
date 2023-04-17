@@ -48,7 +48,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: PagesRoute.signInRoute,
-      page: () => SignInScreen(),
+      page: () => const SignInScreen(),
     ),
     GetPage(
       name: PagesRoute.baseRoute,
