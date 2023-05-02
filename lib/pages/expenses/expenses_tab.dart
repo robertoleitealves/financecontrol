@@ -2,7 +2,7 @@ import 'package:financecontrol/components/customTextField.dart';
 import 'package:financecontrol/components/customappbar.dart';
 import 'package:financecontrol/pages/expenses/expense_screen.dart';
 import 'package:financecontrol/pages/expenses/expenses_controller.dart';
-import 'package:financecontrol/pages/market/market_controller.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,7 @@ import '../../components/customcolors.dart';
 class ExpensesTab extends StatelessWidget {
   ExpensesTab({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _marketController = Get.find<MarketController>();
+
   final _controller = Get.find<ExpensesController>();
 
   @override
@@ -112,7 +112,7 @@ class ExpensesTab extends StatelessWidget {
                                   padding: const EdgeInsets.all(8.0),
                                   child: DropdownButton(
                                       borderRadius: BorderRadius.circular(16),
-                                      hint: const Text('Forma de pagamento'),
+                                      hint: const Text('Cartão utilizado'),
                                       alignment: Alignment.center,
                                       isExpanded: true,
                                       items: _controller.pay
@@ -128,35 +128,18 @@ class ExpensesTab extends StatelessWidget {
                                       }),
                                 ),
                                 const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8),
                                     label: 'Empresa',
                                     icon: Icons.business_sharp),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                                  child: DropdownButton(
-                                      borderRadius: BorderRadius.circular(16),
-                                      hint: const Text('Lojas Cadastradas'),
-                                      alignment: Alignment.center,
-                                      isExpanded: true,
-                                      items: _marketController.marketList!
-                                          .map<DropdownMenuItem<String>>(
-                                              (value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value['market'],
-                                          child: Text(value['market']),
-                                        );
-                                      }).toList(),
-                                      onChanged: (market) {
-                                        _controller.selectedMarket = market;
-                                      }),
-                                ),
                                 const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8),
                                     label: 'Qtde de parcelas',
                                     icon: Icons.numbers),
                                 const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8),
                                     label: 'Valor',
                                     icon: Icons.numbers),
                                 ElevatedButton(

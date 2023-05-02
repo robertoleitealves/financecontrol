@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../components/customcolors.dart';
 import '../creditcard/creditcard_tab.dart';
 import '../expenses/expenses_tab.dart';
-import '../market/market_tab.dart';
+
 import 'controller/navigation_controller.dart';
 
 class BaseScreen extends StatelessWidget {
@@ -19,7 +19,6 @@ class BaseScreen extends StatelessWidget {
         controller: navigationController.pageController,
         children: [
           ExpensesTab(),
-          MarketTab(),
           CreditCardTab(),
           const ProfileTab(),
         ],
@@ -37,8 +36,7 @@ class BaseScreen extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.business_center), label: 'Lojas'),
+ 
             BottomNavigationBarItem(
                 icon: Icon(Icons.credit_card), label: 'Cartões'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),

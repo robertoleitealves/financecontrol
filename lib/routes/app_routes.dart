@@ -1,7 +1,7 @@
 import 'package:financecontrol/pages/creditcard/creditcard_screen.dart';
 import 'package:financecontrol/pages/expenses/expense_screen.dart';
 import 'package:financecontrol/pages/expenses/expenses_bindings.dart';
-import 'package:financecontrol/pages/market/market_binding.dart';
+
 import 'package:get/get.dart';
 
 import '../pages/auth/view/signin_screen.dart';
@@ -10,21 +10,12 @@ import '../pages/base/base_screen.dart';
 import '../pages/creditcard/credicard_binding.dart';
 import '../pages/creditcard/creditcard_tab.dart';
 import '../pages/expenses/expenses_tab.dart';
-import '../pages/market/market_screen.dart';
-import '../pages/market/market_tab.dart';
+
 import '../pages/splash/splash_screen.dart';
 
 abstract class AppPages {
   static final pages = <GetPage>[
-    GetPage(
-      name: PagesRoute.marketRoute,
-      page: () => MarketTab(),
-      binding: MarketBinding(),
-    ),
-    GetPage(
-      name: PagesRoute.marketSelectedRoute,
-      page: () => MarketScreen(),
-    ),
+ 
     GetPage(
       name: PagesRoute.creditCardRoute,
       page: () => CreditCardTab(),

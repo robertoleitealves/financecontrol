@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class ExpensesModel {
+import 'package:equatable/equatable.dart';
+
+class ExpensesModel extends Equatable {
   int? idExpense;
   String? market;
   int? payment; //0 - CREDIÁRIO | 1 - CARTÃO
@@ -23,4 +25,8 @@ class ExpensesModel {
   String toString() {
     return 'ExpensesModel(idExpense: $idExpense, market: $market, payment: $payment, idCreditCard: $idCreditCard, idUser: $idUser, idMarketPlan: $idMarketPlan, installments: $installments, purchaseValue: $purchaseValue)';
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [idExpense];
 }

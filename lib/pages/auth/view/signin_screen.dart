@@ -86,7 +86,127 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 20,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: ((context) {
+                            return StatefulBuilder(
+                                builder: (context, setState) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)),
+                                title: const Text(
+                                  'Esqueci a senha',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    const CustomTextField(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 8),
+                                        label: 'Digite seu nome',
+                                        icon: Icons.business_sharp),
+                                    const CustomTextField(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 8),
+                                        label: 'Digite seu CPF',
+                                        icon: Icons.numbers),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: ((context) {
+                                              return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  title: const Text(
+                                                    'Nova senha',
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
+                                                    children: [
+                                                      const CustomTextField(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 8),
+                                                          label:
+                                                              'Digite a nova senha',
+                                                          icon: Icons
+                                                              .business_sharp),
+                                                      const CustomTextField(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 8),
+                                                          label:
+                                                              'Digite a senha novamente',
+                                                          icon: Icons.numbers),
+                                                      ElevatedButton(
+                                                          onPressed: () {},
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  backgroundColor:
+                                                                      CustomColors
+                                                                          .customSwatchColor),
+                                                          child: const Text(
+                                                            'Alterar senha',
+                                                          )),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                backgroundColor:
+                                                                    CustomColors
+                                                                        .customContrastColor),
+                                                        child: const Text(
+                                                            'Voltar'),
+                                                      )
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                            }),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                CustomColors.customSwatchColor),
+                                        child: const Text(
+                                          'Solicitar',
+                                        )),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              CustomColors.customContrastColor),
+                                      child: const Text('Voltar'),
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
+                          }),
+                        );
+                      },
                       child: const Text('Esqueceu a senha? '),
                     ),
                     ElevatedButton(

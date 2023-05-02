@@ -106,59 +106,60 @@ class ProfileTab extends StatelessWidget {
                               fontSize: 20,
                               color: Colors.black),
                           actions: [
-                            const Padding(
-                              padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                              child: CustomTextField(
-                                  label: 'Digite a senha atual',
-                                  icon: Icons.password),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CustomTextField(
-                                  label: 'Digite a nova senha',
-                                  icon: Icons.password),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CustomTextField(
-                                  label: 'Digite a nova senha novamente',
-                                  icon: Icons.password),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          CustomColors.customContrastColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Retornar'),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                    child: CustomTextField(
+                                        label: 'Digite a senha atual',
+                                        icon: Icons.password),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          CustomColors.customSwatchColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    onPressed: () {},
-                                    child: const Text('Atualizar senha'),
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: CustomTextField(
+                                        label: 'Digite a nova senha',
+                                        icon: Icons.password),
                                   ),
-                                )
-                              ],
-                            )
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: CustomTextField(
+                                        label: 'Digite a nova senha novamente',
+                                        icon: Icons.password),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            CustomColors.customSwatchColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: const Text('Atualizar senha'),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            CustomColors.customContrastColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Retornar'),
+                                    ),
+                                  ),
+                                ]),
                           ],
                         ),
                       );

@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'pages/creditcard/creditcard_controller.dart';
-import 'pages/market/market_controller.dart';
+
 
 void main() {
   Get.put(AuthController());
-  Get.put(MarketController());
   Get.put(ExpensesController());
   Get.put(CreditCardController());
   runApp(const FinancialControl());
