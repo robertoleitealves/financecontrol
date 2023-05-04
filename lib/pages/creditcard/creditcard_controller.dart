@@ -2,10 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class CreditCardController extends GetxController {
-  List? creditCardList = [
+  List creditCardList = [
     {
       'creditCard': 'Nubank',
       'avaliableLimit': 48.5,
+      'expensesValue': 151.5,
       'valueLimit': 200.0,
       'expensesCard': [
         {
@@ -34,6 +35,7 @@ class CreditCardController extends GetxController {
     {
       'creditCard': 'C6',
       'avaliableLimit': 50.0,
+      'expensesValue': 150.0,
       'valueLimit': 200.0,
       'expensesCard': [
         {
@@ -62,6 +64,7 @@ class CreditCardController extends GetxController {
     {
       'creditCard': 'Next',
       'avaliableLimit': 30.0,
+      'expensesValue': 120.0,
       'valueLimit': 150.0,
       'expensesCard': [
         {
@@ -88,6 +91,19 @@ class CreditCardController extends GetxController {
       ]
     },
   ];
+
   Map? creditCardSelected;
+  double sum = 0.00;
   final controller = ScrollController();
+
+  Future creditCardSelect(Map itemSelected) async {
+    creditCardSelected = itemSelected;
+
+    update();
+  }
+
+  Future getAllCreditCards() async {}
+  Future insertCreditCard() async {}
+  Future updateCreditCard() async {}
+  Future deleteCreditCard() async {}
 }

@@ -16,7 +16,7 @@ class ExpensesController extends GetxController {
       'market': 'Bar Joaquina',
       'expense': 'Bebidas',
       'payment': 'NuBank',
-      'installments': 1,
+      'installments': 3,
       'purchaseValue': 70.00,
       'date': '2023-03-18'
     },
@@ -39,4 +39,11 @@ class ExpensesController extends GetxController {
     totalValue =
         expenses[0]['value'] + expenses[1]['value'] + expenses[2]['value'].obs;
   }
+
+Future getAllExpenses() async{
+  
+}
+Future insertExpense() async{}
+Future updateExpense() async{}
+Future deleteExpense() async{}
 }

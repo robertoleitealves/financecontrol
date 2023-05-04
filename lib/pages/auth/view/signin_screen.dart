@@ -70,6 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () {
                         Get.put(NavigationController());
                         Get.toNamed(PagesRoute.baseRoute);
+                        _controller.signIn();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: CustomColors.customSwatchColor,
@@ -158,28 +159,47 @@ class _SignInScreenState extends State<SignInScreen> {
                                                               'Digite a senha novamente',
                                                           icon: Icons.numbers),
                                                       ElevatedButton(
-                                                          onPressed: () {},
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  backgroundColor:
-                                                                      CustomColors
-                                                                          .customSwatchColor),
+                                                          onPressed: () {
+                                                            Get.put(
+                                                                NavigationController());
+                                                            Get.toNamed(
+                                                                PagesRoute
+                                                                    .baseRoute);
+                                                          },
+                                                          style: ElevatedButton.styleFrom(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              16.0)),
+                                                              backgroundColor:
+                                                                  CustomColors
+                                                                      .customSwatchColor),
                                                           child: const Text(
                                                             'Alterar senha',
                                                           )),
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                                backgroundColor:
-                                                                    CustomColors
-                                                                        .customContrastColor),
-                                                        child: const Text(
-                                                            'Voltar'),
-                                                      )
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: TextButton(
+                                                          child: Text(
+                                                            'Retornar',
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: CustomColors
+                                                                    .customContrastColor),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 );
@@ -188,18 +208,32 @@ class _SignInScreenState extends State<SignInScreen> {
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        16.0)),
                                             backgroundColor:
                                                 CustomColors.customSwatchColor),
                                         child: const Text(
                                           'Solicitar',
                                         )),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              CustomColors.customContrastColor),
-                                      child: const Text('Voltar'),
-                                    )
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextButton(
+                                        child: Text(
+                                          'Retornar',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: CustomColors
+                                                .customContrastColor,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ),
                                   ],
                                 ),
                               );

@@ -1,12 +1,14 @@
 import 'package:financecontrol/components/customTextField.dart';
 import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../components/customcolors.dart';
+import '../pages/auth/controller/auth_controller.dart';
 
 class ProfileTab extends StatelessWidget {
-  const ProfileTab({super.key});
-
+   ProfileTab({super.key});
+  final _controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,18 +147,17 @@ class ProfileTab extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            CustomColors.customContrastColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
+                                      child: Text(
+                                        'Retornar',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: CustomColors
+                                                .customContrastColor),
                                       ),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: const Text('Retornar'),
                                     ),
                                   ),
                                 ]),
@@ -195,18 +196,18 @@ class ProfileTab extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          CustomColors.customSwatchColor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
+                                  child: TextButton(
+                                    child: Text(
+                                      'Retornar',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              CustomColors.customSwatchColor),
                                     ),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: const Text('Retornar'),
                                   ),
                                 ),
                                 Padding(
@@ -219,7 +220,9 @@ class ProfileTab extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(16)),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _controller.deleteUser();
+                                    },
                                     child: const Text('Apagar conta'),
                                   ),
                                 ),

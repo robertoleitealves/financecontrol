@@ -77,7 +77,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _controller.signUp();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: CustomColors.customSwatchColor,
                     padding: const EdgeInsets.all(8.0),

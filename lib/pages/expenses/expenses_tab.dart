@@ -35,47 +35,48 @@ class ExpensesTab extends StatelessWidget {
                 child: Column(children: [
                   Expanded(
                     child: GetBuilder<ExpensesController>(
-                        builder: (controller) => ListView.builder(
-                            controller: _controller.controller,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: _controller.expenses.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                  title: Text(
-                                    _controller.expenses[index]['market'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  subtitle: Text(
-                                    'R\$ ${_controller.expenses[index]['purchaseValue']}',
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  onTap: () {
-                                    _controller.expenseSelected =
-                                        _controller.expenses[index];
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => Dialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                        child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            child: ExpenseScreen()),
-                                      ),
-                                    );
-                                    // Get.toNamed(
-                                    //     PagesRoute.expenseSelectedRoute);
-                                  });
-                            })),
+                      builder: (controller) => ListView.builder(
+                        controller: _controller.controller,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: _controller.expenses.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              _controller.expenses[index]['market'],
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            subtitle: Text(
+                              'R\$ ${_controller.expenses[index]['purchaseValue']}',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            onTap: () {
+                              _controller.expenseSelected =
+                                  _controller.expenses[index];
+                              showDialog(
+                                context: context,
+                                builder: (context) => Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16)),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      child: ExpenseScreen()),
+                                ),
+                              );
+                              // Get.toNamed(
+                              //     PagesRoute.expenseSelectedRoute);
+                            },
+                          );
+                        },
+                      ),
+                    ),
                   ),
                   SizedBox(
                     child: Text(
-                      'Total: ${_controller.totalValue?.value.toString()}',
+                      'Total: ${_controller.totalValue?.toString()}',
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -128,37 +129,44 @@ class ExpensesTab extends StatelessWidget {
                                       }),
                                 ),
                                 const CustomTextField(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8),
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Empresa',
                                     icon: Icons.business_sharp),
                                 const CustomTextField(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8),
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Qtde de parcelas',
                                     icon: Icons.numbers),
                                 const CustomTextField(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8),
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Valor',
                                     icon: Icons.numbers),
                                 ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
                                         backgroundColor:
                                             CustomColors.customSwatchColor),
                                     child: const Text(
                                       'Cadastrar',
                                     )),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          CustomColors.customContrastColor),
-                                  child: const Text('Voltar'),
-                                )
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      'Retornar',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              CustomColors.customContrastColor),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ),
                               ],
                             ),
                           ),

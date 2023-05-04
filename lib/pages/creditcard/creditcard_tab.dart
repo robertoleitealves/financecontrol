@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 
 import '../../components/customTextField.dart';
 import '../../components/customcolors.dart';
-import '../../routes/app_routes.dart';
+
 import 'creditcard_controller.dart';
+import 'creditcard_screen.dart';
 
 class CreditCardTab extends StatelessWidget {
   CreditCardTab({super.key});
@@ -36,29 +37,46 @@ class CreditCardTab extends StatelessWidget {
                             controller: _controller.controller,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: _controller.creditCardList!.length,
+                            itemCount: _controller.creditCardList.length,
                             itemBuilder: (context, index) {
                               return ListTile(
                                   title: Text(
-                                    _controller.creditCardList![index]
+                                    _controller.creditCardList[index]
                                         ['creditCard'],
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
                                   subtitle: Text(
-                                    'R\$ ${_controller.creditCardList![index]['avaliableLimit']}',
+                                    'R\$ ${_controller.creditCardList[index]['avaliableLimit']}',
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   onTap: () {
-                                    _controller.creditCardSelected =
-                                        _controller.creditCardList![index];
-                                    Get.toNamed(
-                                        PagesRoute.creditCardSelectedRoute);
+                                    _controller.creditCardSelect(
+                                        _controller.creditCardList[index]);
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        child: Card(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16)),
+                                            child: CreditCardScreen()),
+                                      ),
+                                    );
                                   });
                             })),
                   ),
                 ]),
+              ),
+              Text(
+                'Total das faturas: ${_controller.sum}',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -94,7 +112,7 @@ class CreditCardTab extends StatelessWidget {
                                       hint: const Text('Selecione...'),
                                       alignment: Alignment.center,
                                       isExpanded: true,
-                                      items: _controller.creditCardList!
+                                      items: _controller.creditCardList
                                           .map<DropdownMenuItem<String>>(
                                               (value) {
                                         return DropdownMenuItem<String>(
@@ -120,20 +138,30 @@ class CreditCardTab extends StatelessWidget {
                                 ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0)),
                                         backgroundColor:
                                             CustomColors.customSwatchColor),
                                     child: const Text(
                                       'Cadastrar',
                                     )),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          CustomColors.customContrastColor),
-                                  child: const Text('Voltar'),
-                                )
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      'Retornar',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              CustomColors.customContrastColor),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ),
                               ],
                             ),
                           ),

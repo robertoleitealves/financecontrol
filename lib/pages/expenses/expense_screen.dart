@@ -92,17 +92,31 @@ class ExpenseScreen extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                    backgroundColor: CustomColors.customSwatchColor),
-                child: const Text(
-                  'Apagar despesa',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ),
+              child: _controller.expenseSelected!['installments'] <= 1
+                  ? ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          backgroundColor: CustomColors.customSwatchColor),
+                      child: const Text(
+                        'Apagar despesa',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    )
+                  : ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          backgroundColor: CustomColors.customSwatchColor),
+                      child: const Text(
+                        'Abater parcela',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
             ),
             TextButton(
               onPressed: () {

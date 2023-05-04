@@ -20,7 +20,7 @@ class BaseScreen extends StatelessWidget {
         children: [
           ExpensesTab(),
           CreditCardTab(),
-          const ProfileTab(),
+          ProfileTab(),
         ],
       ),
       bottomNavigationBar: Obx(
@@ -36,7 +36,6 @@ class BaseScreen extends StatelessWidget {
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined), label: 'Home'),
- 
             BottomNavigationBarItem(
                 icon: Icon(Icons.credit_card), label: 'Cartões'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
