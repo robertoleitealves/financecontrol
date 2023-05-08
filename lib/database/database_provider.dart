@@ -74,8 +74,8 @@ class DatabaseProvider {
 
   // CLOSE DATABASE
   Future close() async {
-    final _db = await _instance.db;
-    _db.close();
+    final db = await _instance.db;
+    db.close();
   }
 
   // METHODS

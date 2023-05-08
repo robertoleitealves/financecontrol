@@ -1,4 +1,4 @@
-import 'package:financecontrol/components/customTextField.dart';
+import 'package:financecontrol/components/custom_text_field.dart';
 import 'package:financecontrol/components/customappbar.dart';
 import 'package:financecontrol/pages/expenses/expense_screen.dart';
 import 'package:financecontrol/pages/expenses/expenses_controller.dart';
@@ -128,19 +128,19 @@ class ExpensesTab extends StatelessWidget {
                                         _controller.selectedPay = value;
                                       }),
                                 ),
-                                CustomTextField(
+                               const  CustomTextField(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                         EdgeInsets.symmetric(vertical: 8),
                                     label: 'Empresa',
                                     icon: Icons.business_sharp),
-                                CustomTextField(
+                                const CustomTextField(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                         EdgeInsets.symmetric(vertical: 8),
                                     label: 'Qtde de parcelas',
                                     icon: Icons.numbers),
-                                CustomTextField(
+                               const  CustomTextField(
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                         EdgeInsets.symmetric(vertical: 8),
                                     label: 'Valor',
                                     icon: Icons.numbers),
                                 ElevatedButton(

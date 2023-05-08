@@ -2,7 +2,7 @@ import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../components/customTextField.dart';
+import '../../components/custom_text_field.dart';
 import '../../components/customcolors.dart';
 
 import 'creditcard_controller.dart';
@@ -76,7 +76,7 @@ class CreditCardTab extends StatelessWidget {
               Text(
                 'Total das faturas: ${_controller.sum}',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -112,16 +112,15 @@ class CreditCardTab extends StatelessWidget {
                                   onChanged: (nameCreditCard) =>
                                       print(nameCreditCard),
                                 ),
-                                CustomTextField(
+                                const CustomTextField(
                                     keyboardType: TextInputType.number,
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Data de validade',
                                     icon: Icons.numbers),
-                                CustomTextField(
+                                const CustomTextField(
                                     keyboardType: TextInputType.number,
                                     padding:
-                                        const EdgeInsets.symmetric(vertical: 8),
+                                         EdgeInsets.symmetric(vertical: 8),
                                     label: 'Limite total: ',
                                     icon: Icons.numbers),
                                 ElevatedButton(

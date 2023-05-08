@@ -1,9 +1,10 @@
 import 'package:financecontrol/pages/auth/controller/auth_controller.dart';
 import 'package:financecontrol/pages/base/controller/navigation_controller.dart';
-import 'package:financecontrol/components/customTextField.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../components/custom_text_field.dart';
 import '../../../components/customcolors.dart';
 import '../../../routes/app_routes.dart';
 
@@ -70,7 +71,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                      
                         _controller.signIn();
                       },
                       style: ElevatedButton.styleFrom(
@@ -108,14 +108,14 @@ class _SignInScreenState extends State<SignInScreen> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    CustomTextField(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8),
+                                    const CustomTextField(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 8),
                                         label: 'Digite seu nome',
                                         icon: Icons.business_sharp),
-                                    CustomTextField(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8),
+                                    const CustomTextField(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 8),
                                         label: 'Digite seu CPF',
                                         icon: Icons.numbers),
                                     ElevatedButton(
@@ -144,19 +144,17 @@ class _SignInScreenState extends State<SignInScreen> {
                                                         CrossAxisAlignment
                                                             .stretch,
                                                     children: [
-                                                      CustomTextField(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
+                                                      const CustomTextField(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
                                                                   vertical: 8),
                                                           label:
                                                               'Digite a nova senha',
                                                           icon: Icons
                                                               .business_sharp),
-                                                      CustomTextField(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
+                                                      const CustomTextField(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
                                                                   vertical: 8),
                                                           label:
                                                               'Digite a senha novamente',

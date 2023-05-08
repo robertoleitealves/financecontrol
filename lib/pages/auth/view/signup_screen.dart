@@ -1,6 +1,6 @@
 import 'package:financecontrol/components/customcolors.dart';
 import 'package:financecontrol/pages/auth/controller/auth_controller.dart';
-import 'package:financecontrol/components/customTextField.dart';
+import 'package:financecontrol/components/custom_text_field.dart';
 import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 label: 'Nome',
                 icon: Icons.person,
                 controller: _controller.nameController,
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               CustomTextField(
                 label: 'Data de nascimento',

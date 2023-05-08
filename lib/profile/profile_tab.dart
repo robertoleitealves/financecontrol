@@ -1,4 +1,4 @@
-import 'package:financecontrol/components/customTextField.dart';
+import 'package:financecontrol/components/custom_text_field.dart';
 import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -115,19 +115,19 @@ class ProfileTab extends StatelessWidget {
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  CustomTextField(
+                                  const CustomTextField(
                                       label: 'Digite a senha atual',
-                                      padding: const EdgeInsets.all(8),
+                                      padding:  EdgeInsets.all(8),
                                       icon: Icons.password),
-                                  CustomTextField(
+                                  const CustomTextField(
                                     label: 'Digite a nova senha',
                                     icon: Icons.password,
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(8.0),
                                   ),
-                                  CustomTextField(
+                                  const CustomTextField(
                                     label: 'Digite a nova senha novamente',
                                     icon: Icons.password,
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(8.0),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),

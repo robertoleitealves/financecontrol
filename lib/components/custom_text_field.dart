@@ -2,20 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CustomTextField extends StatelessWidget {
-  Key? key;
+class CustomTextField extends StatefulWidget {
   final String label;
   final TextEditingController? controller;
   final FocusNode? focusNode;
-  final InputDecoration? decoration = const InputDecoration();
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
-  final TextCapitalization textCapitalization = TextCapitalization.none;
   final TextStyle? style;
   final StrutStyle? strutStyle;
-  final TextAlign textAlign = TextAlign.start;
   final TextAlignVertical? textAlignVertical;
-  final int? maxLines = 1;
   final void Function(String)? onChanged;
   final void Function()? onEditingComplete;
   final void Function(String)? onSubmitted;
@@ -24,7 +19,7 @@ class CustomTextField extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final IconData icon;
 
-  CustomTextField({
+  const CustomTextField({
     Key? key,
     required this.label,
     this.controller,
@@ -44,23 +39,38 @@ class CustomTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  Key? key;
+
+  final InputDecoration? decoration = const InputDecoration();
+
+  final TextCapitalization textCapitalization = TextCapitalization.none;
+
+  final TextAlign textAlign = TextAlign.start;
+
+  final int? maxLines = 1;
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
+      padding: widget.padding,
       child: TextField(
-        keyboardType: keyboardType,
-        controller: controller,
+        keyboardType: widget.keyboardType,
+        controller: widget.controller,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
           isDense: true,
-          labelText: label,
-          prefixIcon: Icon(icon),
+          labelText: widget.label,
+          prefixIcon: Icon(widget.icon),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        onChanged: onChanged,
+        onChanged: widget.onChanged,
       ),
     );
   }
