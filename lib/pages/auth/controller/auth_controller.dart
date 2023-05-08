@@ -1,90 +1,225 @@
-import 'dart:convert';
+import 'dart:io';
 
-import 'package:financecontrol/database/db_constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
 
+import '../../../database/database_provider.dart';
+import '../../../database/storage_keys.dart';
 import '../../../model/user_model.dart';
 import '../../../routes/app_routes.dart';
-import '../../base/controller/navigation_controller.dart';
+import '../../../services/utils_services.dart';
+import '../repository/auth_repository.dart';
 
 class AuthController extends GetxController {
-  final nameController = TextEditingController();
-  final cpfController = TextEditingController();
-  final birthdateController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  RxBool isLoading = false.obs;
+
+  final helper = DatabaseProvider();
+  final authRepository = AuthRepository();
+  final utilServices = UtilsServices();
+  // final connectivity = ConnectivityController();
+
+  UserModel user = UserModel();
+  // Token? token;
+
+  // SIGNUP CONTROLLERS
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmedController = TextEditingController();
+  final nameController = TextEditingController();
+  final passwordSignInController = TextEditingController();
   final passwordConfirmController = TextEditingController();
   final nameSignInController = TextEditingController();
-  final passwordSignInController = TextEditingController();
-  String? nameSignin;
-  String? passwordSignin;
-  UserModel? savedUser;
-  UserModel user = UserModel();
+  final phoneNumberController = TextEditingController();
+  final birthdateController = TextEditingController();
+  final cpfController = TextEditingController();
 
-  int? idUser;
-  UserModel newUser = UserModel();
+  @override
+  void onInit() {
+    super.onInit();
+    validateToken();
 
-  //CRIAR NOVO USUÁRIO
-  Future signUp() async {
-    newUser = UserModel(
-        name: nameController.text,
-        birthdate: birthdateController.text,
-        phoneNumber: phoneNumberController.text,
-        cpfNumber: cpfController.text,
-        password: passwordController.text);
-    saveNewUser(newUser);
-    nameController.text = '';
-    birthdateController.text = '';
-    phoneNumberController.text = '';
-    cpfController.text = '';
-    passwordController.text = '';
-    passwordConfirmController.text = '';
-
-    print("Usuário cadastrado com sucesso");
-    return newUser;
   }
 
-  //LOGIN
-  Future signIn() async {
-    nameSignin = nameSignInController.text;
-    passwordSignin = passwordSignInController.text;
-    savedUser = await getSavedUser();
+  // QUANDO INICIALIZAR O APLICATIVO FAZ A VERIFICAÇÃO
+  Future<void> validateToken() async {
+    // Recuperar o token que foi salvo localmente
+    String? token = await utilServices.getLocalData(key: StorageKeys.token);
+    if (token == null) {
+      InitialController().loadData();
+      // Tempo da Splash screen - NÃO RETIRAR
+      await Future.delayed(const Duration(seconds: 4));
+      Get.offAllNamed(PageRoutes.signInRoute);
+      return;
+    }
 
-    if (nameSignin == savedUser!.name &&
-        passwordSignin == savedUser!.password) {
-      print('Login efetuado com sucesso');
-      print(savedUser);
-      Get.put(NavigationController());
-      Get.toNamed(PagesRoute.baseRoute);
+    if (connectivity.isConnected) {
+      AuthResult result = await authRepository.validateToken(token);
+
+      result.when(
+        success: (authResponse) async {
+          user = await helper.getUserDb(getAllFields: true);
+          this.token = Token(type: 'Bearer', token: token);
+          debugPrint('Token: $token');
+          Get.offAllNamed(PagesRoutes.baseRoute);
+        },
+        error: (message) {
+          utilServices.showToast(message: "Login expirado");
+          signOut();
+        },
+      );
     } else {
-      print('Nome e/ou senha incorreta');
+      utilServices.showToast(message: 'Você está desconectado da internet');
+      user = await authRepository.getUserDb();
+      Get.offAllNamed(PagesRoutes.baseRoute);
     }
   }
 
-  Future<UserModel> getSavedUser() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    String? jsonUser = preference.getString(userTable);
-    print(jsonUser);
-
-    Map<String, dynamic> mapUser = json.decode(jsonUser!);
-    user = UserModel.fromJson(mapUser);
-    print(mapUser);
-    return user;
+  // RESETAR SENHA
+  Future<void> resetPassword(String email) async {
+    isLoading.value = true;
+    AuthResult result = await authRepository.resetPassword(email);
+    isLoading.value = false;
+    result.when(
+      success: (response) {
+        Get.back();
+        Get.snackbar('E-mail de Recuperaçao Enviado!',
+            'Foi enviado um e-mail de verificação para o e-mail: ' + email,
+            duration: const Duration(seconds: 8),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: AppColors.primary,
+            colorText: AppColors.textColorPrimary,
+            margin: const EdgeInsets.all(4));
+      },
+      error: (message) {
+        utilServices.showToast(message: message, isError: true);
+      },
+    );
   }
 
-  //ATUALIZAR SENHA
-  Future updatePassword() async {}
-
-  //DELETAR USUÁRIO
-  Future deleteUser() async {}
-
-  //SAVE USER
-  Future saveNewUser(UserModel newUser) async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    //COLETA OS DADOS INSERIDOS E O CONVERTE EM JSON STRING
-    preference.setString(userTable, json.encode(newUser));
+  // DESATIVAR USUÁRIO
+  Future disableUser() async {
+    isLoading.value = true;
+    final response = await authRepository.disableUser(user.id!, token!.token);
+    isLoading.value = false;
+    return response;
   }
+
+  // DESLOGAR DO APLICATIVO
+  Future<void> signOut() async {
+    // Zerar o user
+    user = UserModel();
+
+    // Remover o token localmente
+    await utilServices.removeLocalData(key: StorageKeys.token);
+
+    // Apagar todos os dados do controller
+    clearAuthController(userModelToo: true);
+
+    // Apaga todas as tabelas refente ao user do banco local
+    clearDbDataSignOut();
+
+    // Ir para o login
+    Get.offAllNamed(PagesRoutes.signInRoute);
+  }
+
+  // CADASTRAR USUÁRIO
+  Future<void> signUp() async {
+    isLoading.value = true;
+    AuthResult result = await authRepository.signUp(user);
+    result.when(
+      success: (authResponse) async {
+        clearAuthController();
+        await signIn();
+        utilServices.showToast(
+            message: "Conta criada e logada com sucesso!", isSuccess: true);
+      },
+      error: (message) {
+        utilServices.showToast(message: message, isError: true);
+      },
+    );
+
+    isLoading.value = false;
+  }
+
+  // LOGAR USUÁRIO
+  Future<void> signIn() async {
+    if (connectivity.isConnected) {
+      isLoading.value = true;
+      AuthResult result = await authRepository.signin(
+          email: user.email!, password: user.password!);
+
+      isLoading.value = false;
+
+      result.when(
+        success: (authResponse) async {
+          try {
+            await helper.saveUserDb(authResponse.user);
+
+            // await helper.saveTokenDb(
+            //   TokenModel(
+            //     token: authResponse.token.token,
+            //     userId: authResponse.user.id,
+            //   ),
+            // );
+            debugPrint("Token: ${authResponse.token.token}");
+          } catch (err) {
+            Get.snackbar('Erro database', err.toString());
+          }
+          user = authResponse.user;
+          token = authResponse.token;
+          saveTokenAndProceedToBase();
+        },
+        error: (message) {
+          utilServices.showToast(message: message, isError: true);
+        },
+      );
+    } else {
+      utilServices.showToast(
+          message:
+              "Você precisa estar conectado a internet. Verifique sua conexão e tente novamente.");
+    }
+  }
+
+  // SALVAR TOKEN LOCAL
+  void saveTokenAndProceedToBase() {
+    // Salvar o token
+    utilServices.saveLocalData(key: StorageKeys.token, data: token!.token);
+    // Ir para a base
+    Get.offAllNamed(PagesRoute.baseRoute);
+  }
+
+  // Zerar USER
+  void clearAuthController({bool userModelToo = false}) {
+    if (userModelToo) {
+      user = UserModel();
+    }
+
+    passwordController.clear();
+    passwordConfirmedController.clear();
+
+    nameController.clear();
+    phoneNumberController.clear();
+    birthdateController.clear();
+    cpfController.clear();
+  
+  }
+
+  // // APAGAR DADOS DO BD RELACIONADO AO USER
+  // void clearDbDataSignOut() async {
+  //   await helper.deleteDbTablesSignOut();
+  // }
+
+  // FINALIZE USER
+  void finalizeUserModel() {
+    user.password = passwordController.text;
+    user.name = nameController.text;
+    user.phoneNumber = phoneNumberController.text;
+    user.birthdate = birthdateController.text;
+    user.cpfNumber = cpfController.text;
+
+    signUp();
+  }
+
+ 
+
 }

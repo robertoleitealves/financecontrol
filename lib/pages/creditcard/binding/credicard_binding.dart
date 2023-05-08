@@ -1,5 +1,7 @@
-import 'package:financecontrol/pages/creditcard/creditcard_controller.dart';
+
 import 'package:get/get.dart';
+
+import '../controller/creditcard_controller.dart';
 
 class CreditCardBinding extends Bindings {
   @override

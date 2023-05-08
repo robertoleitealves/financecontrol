@@ -1,11 +1,9 @@
 import 'package:financecontrol/profile/profile_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../components/customcolors.dart';
-import '../creditcard/creditcard_tab.dart';
-import '../expenses/expenses_tab.dart';
-
+import '../creditcard/view/creditcard_tab.dart';
+import '../expenses/view/expenses_tab.dart';
 import 'controller/navigation_controller.dart';
 
 class BaseScreen extends StatelessWidget {

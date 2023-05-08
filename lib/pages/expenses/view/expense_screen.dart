@@ -2,7 +2,7 @@ import 'package:financecontrol/components/customcolors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'expenses_controller.dart';
+import '../controller/expenses_controller.dart';
 
 class ExpenseScreen extends StatelessWidget {
   ExpenseScreen({super.key});

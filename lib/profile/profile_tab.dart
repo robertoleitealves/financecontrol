@@ -117,17 +117,17 @@ class ProfileTab extends StatelessWidget {
                                 children: [
                                   const CustomTextField(
                                       label: 'Digite a senha atual',
-                                      padding:  EdgeInsets.all(8),
+                                      padding: EdgeInsets.all(8),
                                       icon: Icons.password),
                                   const CustomTextField(
                                     label: 'Digite a nova senha',
                                     icon: Icons.password,
-                                    padding:  EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(8.0),
                                   ),
                                   const CustomTextField(
                                     label: 'Digite a nova senha novamente',
                                     icon: Icons.password,
-                                    padding:  EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(8.0),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -221,7 +221,7 @@ class ProfileTab extends StatelessWidget {
                                               BorderRadius.circular(16)),
                                     ),
                                     onPressed: () {
-                                      _controller.deleteUser();
+                                      _controller.disableUser();
                                     },
                                     child: const Text('Apagar conta'),
                                   ),

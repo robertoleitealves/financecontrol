@@ -1,13 +1,12 @@
-import 'package:financecontrol/pages/expenses/expenses_bindings.dart';
-
 import 'package:get/get.dart';
 
 import '../pages/auth/view/signin_screen.dart';
 import '../pages/auth/view/signup_screen.dart';
 import '../pages/base/base_screen.dart';
-import '../pages/creditcard/credicard_binding.dart';
-import '../pages/creditcard/creditcard_tab.dart';
-import '../pages/expenses/expenses_tab.dart';
+import '../pages/creditcard/binding/credicard_binding.dart';
+import '../pages/creditcard/view/creditcard_tab.dart';
+import '../pages/expenses/binding/expenses_bindings.dart';
+import '../pages/expenses/view/expenses_tab.dart';
 
 abstract class AppPages {
   static final pages = <GetPage>[

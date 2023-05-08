@@ -1,11 +1,9 @@
+import 'package:financecontrol/components/custom_text_field.dart';
 import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../components/custom_text_field.dart';
-import '../../components/customcolors.dart';
-
-import 'creditcard_controller.dart';
+import '../../../components/customcolors.dart';
+import '../controller/creditcard_controller.dart';
 import 'creditcard_screen.dart';
 
 class CreditCardTab extends StatelessWidget {

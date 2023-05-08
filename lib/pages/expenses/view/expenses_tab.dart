@@ -1,12 +1,14 @@
 import 'package:financecontrol/components/custom_text_field.dart';
 import 'package:financecontrol/components/customappbar.dart';
-import 'package:financecontrol/pages/expenses/expense_screen.dart';
-import 'package:financecontrol/pages/expenses/expenses_controller.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../components/customcolors.dart';
+
+import '../../../components/customcolors.dart';
+import '../controller/expenses_controller.dart';
+import 'expense_screen.dart';
 
 class ExpensesTab extends StatelessWidget {
   ExpensesTab({super.key});

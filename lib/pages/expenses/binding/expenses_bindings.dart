@@ -1,5 +1,7 @@
-import 'package:financecontrol/pages/expenses/expenses_controller.dart';
+
 import 'package:get/get.dart';
+
+import '../controller/expenses_controller.dart';
 
 class ExpensesBinding extends Bindings {
   @override

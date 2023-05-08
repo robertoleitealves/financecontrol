@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../components/customcolors.dart';
-import 'creditcard_controller.dart';
+import '../../../components/customcolors.dart';
+import '../controller/creditcard_controller.dart';
 
 class CreditCardScreen extends StatelessWidget {
   CreditCardScreen({super.key});
