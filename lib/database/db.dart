@@ -33,15 +33,15 @@
 //   Future<ExpensesModel> createExpense(ExpensesModel expense) async {
 //     try {
 //       final Database db = await getDatabase();
-//       expense.idExpense = await db.rawInsert(
-//         '''insert into $EXPENSES_TABLE_NAME($EXPENSES_COLUMN_IDUSER, 
-//         $EXPENSES_COLUMN_PAYMENT, $EXPENSES_COLUMN_MARKET,
-//         $EXPENSES_COLUMN_IDCREDITCARD,$EXPENSES_COLUMN_MARKETPLAN, 
-//         $EXPENSES_COLUMN_PURCHASEVALUE, $EXPENSES_COLUMN_INSTALLMENTS,
-//         VALUES(${expense.idUser},${expense.payment},
-//         ${expense.market}, ${expense.idCreditCard}, 
-//         ${expense.idMarketPlan}, ${expense.purchaseValue}, 
-//         ${expense.installments} ))''',
+      // expense.idExpense = await db.rawInsert(
+      //   '''insert into $EXPENSES_TABLE_NAME($EXPENSES_COLUMN_IDUSER, 
+      //   $EXPENSES_COLUMN_PAYMENT, $EXPENSES_COLUMN_MARKET,
+      //   $EXPENSES_COLUMN_IDCREDITCARD,$EXPENSES_COLUMN_MARKETPLAN, 
+      //   $EXPENSES_COLUMN_PURCHASEVALUE, $EXPENSES_COLUMN_INSTALLMENTS,
+      //   VALUES(${expense.idUser},${expense.payment},
+      //   ${expense.market}, ${expense.idCreditCard}, 
+      //   ${expense.idMarketPlan}, ${expense.purchaseValue}, 
+      //   ${expense.installments} ))''',
 //       );
 //     } catch (e) {
 //       // return (e);

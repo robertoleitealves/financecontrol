@@ -104,36 +104,25 @@ class CreditCardTab extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Padding(
+                                CustomTextField(
+                                  icon: Icons.credit_card,
+                                  label: 'Nome do cartão: ',
                                   padding:
-                                      const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                                  child: DropdownButton(
-                                      borderRadius: BorderRadius.circular(16),
-                                      hint: const Text('Selecione...'),
-                                      alignment: Alignment.center,
-                                      isExpanded: true,
-                                      items: _controller.creditCardList
-                                          .map<DropdownMenuItem<String>>(
-                                              (value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value['creditCard'],
-                                          child: Text(value['creditCard']),
-                                        );
-                                      }).toList(),
-                                      onChanged: (market) {
-                                        _controller.creditCardSelected![
-                                            'creditCard'] = market;
-                                      }),
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  onChanged: (nameCreditCard) =>
+                                      print(nameCreditCard),
                                 ),
-                                const CustomTextField(
+                                CustomTextField(
                                     keyboardType: TextInputType.number,
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    label: 'Qtde de parcelas',
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    label: 'Data de validade',
                                     icon: Icons.numbers),
-                                const CustomTextField(
+                                CustomTextField(
                                     keyboardType: TextInputType.number,
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    label: 'Valor',
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    label: 'Limite total: ',
                                     icon: Icons.numbers),
                                 ElevatedButton(
                                     onPressed: () {},
@@ -171,7 +160,7 @@ class CreditCardTab extends StatelessWidget {
                   );
                 },
                 child: const Text(
-                  'Adicionar despesa',
+                  'Adicionar cartão',
                 ),
               ),
             ],

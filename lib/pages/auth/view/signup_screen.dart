@@ -22,57 +22,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: Text('Novo usuário'),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomTextField(
-                    label: 'Nome',
-                    icon: Icons.person,
-                    controller: _controller.nameController),
+              CustomTextField(
+                label: 'Nome',
+                icon: Icons.person,
+                controller: _controller.nameController,
+                padding: EdgeInsets.symmetric(vertical: 8),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomTextField(
-                  label: 'Data de nascimento',
-                  icon: Icons.date_range,
-                  controller: _controller.dataNascController,
-                ),
+              CustomTextField(
+                label: 'Data de nascimento',
+                icon: Icons.date_range,
+                controller: _controller.birthdateController,
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomTextField(
-                  label: 'Telefone',
-                  icon: Icons.phone,
-                  controller: _controller.phoneNumberController,
-                ),
+              CustomTextField(
+                label: 'Telefone',
+                icon: Icons.phone,
+                controller: _controller.phoneNumberController,
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomTextField(
-                  label: 'CPF',
-                  icon: Icons.numbers,
-                  controller: _controller.cpfController,
-                ),
+              CustomTextField(
+                label: 'CPF',
+                icon: Icons.numbers,
+                controller: _controller.cpfController,
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomTextField(
-                  label: 'Digite uma senha',
-                  icon: Icons.numbers,
-                  controller: _controller.passwordController,
-                ),
+              CustomTextField(
+                label: 'Digite uma senha',
+                icon: Icons.numbers,
+                controller: _controller.passwordController,
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomTextField(
-                  label: 'Digite a senha novamente',
-                  icon: Icons.numbers,
-                  controller: _controller.passwordConfirmController,
-                ),
+              CustomTextField(
+                label: 'Digite a senha novamente',
+                icon: Icons.numbers,
+                controller: _controller.passwordConfirmController,
+                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               Container(
                 padding: const EdgeInsets.all(16.0),

@@ -53,7 +53,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     CustomTextField(
                       icon: Icons.person,
                       label: 'Nome',
-                      controller: _controller.nameController,
+                      controller: _controller.nameSignInController,
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                     ),
                     const SizedBox(
                       height: 20,
@@ -61,15 +62,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     CustomTextField(
                       icon: Icons.lock,
                       label: 'Senha',
-                      controller: _controller.passwordController,
+                      controller: _controller.passwordSignInController,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Get.put(NavigationController());
-                        Get.toNamed(PagesRoute.baseRoute);
+                      
                         _controller.signIn();
                       },
                       style: ElevatedButton.styleFrom(
@@ -107,14 +108,14 @@ class _SignInScreenState extends State<SignInScreen> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    const CustomTextField(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 8),
+                                    CustomTextField(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8),
                                         label: 'Digite seu nome',
                                         icon: Icons.business_sharp),
-                                    const CustomTextField(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 8),
+                                    CustomTextField(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8),
                                         label: 'Digite seu CPF',
                                         icon: Icons.numbers),
                                     ElevatedButton(
@@ -143,17 +144,19 @@ class _SignInScreenState extends State<SignInScreen> {
                                                         CrossAxisAlignment
                                                             .stretch,
                                                     children: [
-                                                      const CustomTextField(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
+                                                      CustomTextField(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   vertical: 8),
                                                           label:
                                                               'Digite a nova senha',
                                                           icon: Icons
                                                               .business_sharp),
-                                                      const CustomTextField(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
+                                                      CustomTextField(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
                                                                   vertical: 8),
                                                           label:
                                                               'Digite a senha novamente',

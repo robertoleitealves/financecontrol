@@ -93,7 +93,7 @@ class CreditCardController extends GetxController {
   ];
 
   Map? creditCardSelected;
-  double sum = 0.00;
+  double sum = 128.5;
   final controller = ScrollController();
 
   Future creditCardSelect(Map itemSelected) async {

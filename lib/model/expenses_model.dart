@@ -1,11 +1,13 @@
+import 'package:equatable/equatable.dart';
+
 import '../database/db_constants.dart';
 
-class ExpensesModel {
+// ignore: must_be_immutable
+class ExpensesModel extends Equatable {
   int? idExpense;
   String? market;
   int? idCreditCard;
   int? idUser;
-
   int? installments; //QTDE PARCELAS
   double? purchaseValue; //VALOR DA COMPRA
   ExpensesModel({
@@ -41,4 +43,8 @@ class ExpensesModel {
     installments = map[expenseInstallmentsColumn];
     purchaseValue = map[expensePurchaseValueColumn];
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [idExpense];
 }

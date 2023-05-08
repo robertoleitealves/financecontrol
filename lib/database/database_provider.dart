@@ -26,11 +26,50 @@ class DatabaseProvider {
   initDb() async {
     // Get a location using getDatabasesPath
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'iz_consultores.db');
+    String path = join(databasePath, 'financial_controls.db');
     // Abrindo um database
     Database myDb = await openDatabase(path,
         version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return myDb;
+  }
+
+  //CREATE EXPENSES
+  Future<ExpensesModel> createExpenses(ExpensesModel expense) async {
+    try {
+      final Database db = initDb();
+
+      expense.idExpense = await db
+          .rawInsert('''insert into $expensesTable($expenseUserIdColumn, 
+         $expenseMarketColumn,
+        $expenseCreditCardIdColumn,
+        $expensePurchaseValueColumn, $expenseInstallmentsColumn,
+        VALUES(${expense.idUser},
+        ${expense.market}, ${expense.idCreditCard}, 
+         ${expense.purchaseValue}, 
+        ${expense.installments} ))''');
+    } catch (ex) {
+      return expense;
+    }
+    return expense;
+  }
+
+  //CREATE CREDITCARD
+  Future<CreditCardModel> createCreditCard(CreditCardModel creditCard) async {
+    try {
+      final Database db = initDb();
+
+      creditCard.idCreditCard = await db
+          .rawInsert('''insert into $expensesTable($creditCardUserIdColumn, 
+         $creditCardNameColumn,$creditCardValidateDateColumn,
+        $creditCardLimitValueColumn, $creditCardAvaliableLimitColumn,
+        VALUES(${creditCard.idUser},
+        ${creditCard.nameCreditCard}, ${creditCard.validateDate}, 
+         ${creditCard.avaliableLimitCard}, 
+        ${creditCard.limitValueCard} ))''');
+    } catch (ex) {
+      return creditCard;
+    }
+    return creditCard;
   }
 
   // CLOSE DATABASE
@@ -145,14 +184,14 @@ class DatabaseProvider {
     await deleteData(table: userTable);
     var id = await insertData(
       userTable,
-      user.toMapDB(),
+      user.toJson(),
     );
     return id;
   }
 
   Future<UserModel> getUserDb() async {
     final result = await readData(table: userTable);
-    UserModel response = UserModel.fromMapDB(result.first);
+    UserModel response = UserModel.fromJson(result.first);
     // if (getAllFields) {
     //   response.customUserAddress = await getCustomUserAddressDb();
     //   response.customLevelUser = await getCustomLevelUserDb();
@@ -164,7 +203,7 @@ class DatabaseProvider {
   Future<int> updateUserDb(UserModel user) async {
     int result = await updateData(
       userTable,
-      user.toMapDB(),
+      user.toJson(),
     );
     return result;
   }
@@ -198,7 +237,7 @@ class DatabaseProvider {
     Batch batch = myDb.batch();
 
     for (var users in values) {
-      batch.insert(userTable, users.toMapDB());
+      batch.insert(userTable, users.toJson());
     }
 
     await batch.commit(noResult: true);
@@ -206,13 +245,13 @@ class DatabaseProvider {
   }
 
   Future<int> saveUserDB(UserModel user) async {
-    final result = await insertData(userTable, user.toMapDB());
+    final result = await insertData(userTable, user.toJson());
     return result;
   }
 
   Future<int> updateUserDB(UserModel user) async {
-    final result = await updateData(userTable, user.toMapDB(),
-        where: '$userIdColumn = ?', args: [user.idUser!]);
+    final result = await updateData(userTable, user.toJson(),
+        where: '$userNameColumn = ?', args: [user.name!]);
     return result;
   }
 

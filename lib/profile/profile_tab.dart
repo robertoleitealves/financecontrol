@@ -7,7 +7,7 @@ import '../components/customcolors.dart';
 import '../pages/auth/controller/auth_controller.dart';
 
 class ProfileTab extends StatelessWidget {
-   ProfileTab({super.key});
+  ProfileTab({super.key});
   final _controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
@@ -27,58 +27,62 @@ class ProfileTab extends StatelessWidget {
               width: 150,
               child: Image.asset('assets/images/person.png'),
             ),
-            const Text.rich(
+            Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'Nome: ',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: 'Roberto Leite Alves',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    text: _controller.user.name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   )
                 ],
               ),
             ),
-            const Text.rich(
+            Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'Data de nascimento: ',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: '04/07/1991',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    text: _controller.user.birthdate,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   )
                 ],
               ),
             ),
-            const Text.rich(
+            Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'CPF: ',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: '123.456.789 - 01',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    text: _controller.user.cpfNumber,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   )
                 ],
               ),
             ),
-            const Text.rich(
+            Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'Celular: ',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: '(16) 9 8238 - 4219',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    text: _controller.user.phoneNumber,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   )
                 ],
               ),
@@ -111,23 +115,19 @@ class ProfileTab extends StatelessWidget {
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                                    child: CustomTextField(
-                                        label: 'Digite a senha atual',
-                                        icon: Icons.password),
+                                  CustomTextField(
+                                      label: 'Digite a senha atual',
+                                      padding: const EdgeInsets.all(8),
+                                      icon: Icons.password),
+                                  CustomTextField(
+                                    label: 'Digite a nova senha',
+                                    icon: Icons.password,
+                                    padding: const EdgeInsets.all(8.0),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: CustomTextField(
-                                        label: 'Digite a nova senha',
-                                        icon: Icons.password),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: CustomTextField(
-                                        label: 'Digite a nova senha novamente',
-                                        icon: Icons.password),
+                                  CustomTextField(
+                                    label: 'Digite a nova senha novamente',
+                                    icon: Icons.password,
+                                    padding: const EdgeInsets.all(8.0),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),

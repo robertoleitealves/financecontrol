@@ -128,16 +128,19 @@ class ExpensesTab extends StatelessWidget {
                                         _controller.selectedPay = value;
                                       }),
                                 ),
-                                const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                CustomTextField(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
                                     label: 'Empresa',
                                     icon: Icons.business_sharp),
-                                const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                CustomTextField(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
                                     label: 'Qtde de parcelas',
                                     icon: Icons.numbers),
-                                const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                CustomTextField(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
                                     label: 'Valor',
                                     icon: Icons.numbers),
                                 ElevatedButton(

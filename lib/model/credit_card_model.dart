@@ -1,6 +1,11 @@
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 import '../database/db_constants.dart';
 
-class CreditCardModel {
+// part 'credit_card_model.g.dart';
+
+@JsonSerializable()
+class CreditCardModel extends Equatable {
   int? idCreditCard;
   int? idUser;
   String? nameCreditCard;
@@ -40,4 +45,12 @@ class CreditCardModel {
     limitValueCard = map[creditCardLimitValueColumn];
     avaliableLimitCard = map[creditCardAvaliableLimitColumn];
   }
+  //   factory CreditCardModel.fromJson(Map<String, dynamic> json) =>
+  //     _$CreditCardFromJson(json);
+
+  // Map<String, dynamic> toJson() => _$CreditCardToJson(this);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [idCreditCard];
 }

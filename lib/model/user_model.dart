@@ -2,43 +2,34 @@
 import '../database/db_constants.dart';
 
 class UserModel {
-  int? idUser;
-  String? nameUser;
-  String? dateOfBirth;
+  String? name;
   String? cpfNumber;
+  String? birthdate;
   String? phoneNumber;
-  String? passwordUser;
-  UserModel({
-    this.idUser,
-    this.nameUser,
-    this.dateOfBirth,
-    this.cpfNumber,
-    this.phoneNumber,
-    this.passwordUser,
-  });
+  String? password;
 
-  @override
-  String toString() {
-    return 'UserModel(idUser: $idUser, nameUser: $nameUser, dateOfBirth: $dateOfBirth, cpfNumber: $cpfNumber, phoneNumber: $phoneNumber, passwordUser: $passwordUser)';
+  UserModel(
+      {this.name,
+      this.cpfNumber,
+      this.birthdate,
+      this.phoneNumber,
+      this.password});
+
+  UserModel.fromJson(Map<String, dynamic> json) {
+    name = json[userNameColumn];
+    cpfNumber = json[userCpfColumn];
+    birthdate = json[userBirthdateColumn];
+    phoneNumber = json[userPhoneColumn];
+    password = json[userPasswordColumn];
   }
 
-  Map<String, dynamic> toMapDB() {
-    return <String, dynamic>{
-      userIdColumn: idUser,
-      userNameColumn: nameUser,
-      userBirthdateColumn: dateOfBirth,
-      userPhoneColumn: phoneNumber,
-      userCpfColumn: cpfNumber,
-      userPasswordColumn: passwordUser
-    };
-  }
-
-  UserModel.fromMapDB(Map<String, dynamic> map) {
-    idUser = map[userIdColumn];
-    nameUser = map[userNameColumn];
-    dateOfBirth = map[userBirthdateColumn];
-    phoneNumber = map[userPhoneColumn];
-    passwordUser = map[userPasswordColumn];
-    cpfNumber = map[userCpfColumn];
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data[userNameColumn] = name;
+    data[userCpfColumn] = cpfNumber;
+    data[userBirthdateColumn] = birthdate;
+    data[userPhoneColumn] = phoneNumber;
+    data[userPasswordColumn] = password;
+    return data;
   }
 }
