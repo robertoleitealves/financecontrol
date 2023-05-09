@@ -1,4 +1,5 @@
-import '../../../database/database_provider.dart';
+
+import '../../../db/database_provider_tg.dart';
 import '../../../model/credit_card_model.dart';
 import '../../../model/expenses_model.dart';
 import '../../../model/user_model.dart';
@@ -9,12 +10,11 @@ class ProducerRepository {
   Future<UserModel> getUserModelDB() async {
     return await _helper.getUserDb();
   }
-  
 
   //EXPENSES
   Future<ExpensesModel> getExpenseByExpenseId(int expenseId) async {
-    List<ExpensesModel> cultureList = await _helper.getExpensesListDb();
-    return cultureList.where((expense) => expense.idExpense == expenseId).first;
+    List<ExpensesModel> expenseList = await _helper.getExpensesListDb();
+    return expenseList.where((expense) => expense.idExpense == expenseId).first;
   }
 
   Future<List<ExpensesModel>> getExpenses() async {
@@ -26,7 +26,7 @@ class ProducerRepository {
     required ExpensesModel expense,
   }) async {
     expense.idCreditCard = creditCardId;
-    await _helper.saveExpensesDB(expense);
+    await _helper.saveExpenseDB(expense);
   }
 
   // CREDITCARD
@@ -39,22 +39,31 @@ class ProducerRepository {
   }
 
   Future<int> deleteCreditCardDb(int creditCardId) async {
-    await _helper.deleteAllExpensesByCreditCardDb(creditCardId);
+    await deleteAllExpensesByCreditCardDb(creditCardId);
     return await _helper.deleteCreditCardDb(creditCardId);
   }
 
-  // FARM
+  Future<int> deleteAllExpensesByCreditCardDb(int creditCardId) async {
+    List<ExpensesModel> expenseList = await getExpenses();
+    expenseList.removeWhere((expense) => expense.idCreditCard != creditCardId);
+    var qtde = 0;
+    for (ExpensesModel expense in expenseList) {
+      await deleteExpenseDb(expense.idExpense!);
+      qtde++;
+    }
+    return qtde;
+  }
+
+  // EXPENSE
   Future<int> saveNewExpenseDB(ExpensesModel expense) async {
-    return await _helper.saveExpensesDB(expense);
+    return await _helper.saveExpenseDB(expense);
   }
 
   Future<int> updateExpenseDb(ExpensesModel expense) async {
-    return await _helper.updateExpensesDb(expense);
+    return await _helper.updateExpenseDb(expense);
   }
 
   Future<int> deleteExpenseDb(int expenseId) async {
-    return await _helper.deleteExpenseDb(expenseId);
+    return await _helper.deleteExpensesDb(expenseId);
   }
-
- 
 }

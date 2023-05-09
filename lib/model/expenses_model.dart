@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../database/db_constants.dart';
+import '../constants/db_constants.dart';
 
 // ignore: must_be_immutable
 class ExpensesModel extends Equatable {

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../database/db_constants.dart';
+import '../constants/db_constants.dart';
 
 // part 'credit_card_model.g.dart';
 

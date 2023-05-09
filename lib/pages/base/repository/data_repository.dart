@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../database/database_provider.dart';
+import '../../../db/database_provider_tg.dart';
 import '../../../model/credit_card_model.dart';
 import '../../../model/expenses_model.dart';
+import '../../../model/token_model.dart';
 import '../../../model/user_model.dart';
 
 class DataRepository {
   final DatabaseProvider _helper = DatabaseProvider();
 
-  // Future<String> getTokenDb() async {
-  //   TokenModel token = await _helper.getTokenDb();
-  //   return token.token!;
-  // }
+  Future<String> getTokenDb() async {
+    TokenModel token = await _helper.getTokenDb();
+    return token.token!;
+  }
 
   Future<UserModel> getUserModelDB() async {
     return await _helper.getUserDb();
@@ -19,7 +20,7 @@ class DataRepository {
 
   Future<void> saveCreditCardsListDb(List<CreditCardModel> list) async {
     try {
-      await _helper.insertCreditCardDb(list);
+      await _helper.insertCreditCardsDb(list);
     } catch (err) {
       debugPrint("SaveCreditCardListDb: ${err.toString()}");
     }
@@ -27,7 +28,7 @@ class DataRepository {
 
   Future<List<CreditCardModel>> getCreditCardsListDb() async {
     try {
-      return await _helper.getCreditCardsListDb();
+      return await _helper.getCreditCardListDb();
     } catch (err) {
       debugPrint("getCreditCardsListDb: ${err.toString()}");
       return <CreditCardModel>[];
@@ -36,7 +37,7 @@ class DataRepository {
 
   Future<void> saveExpensesListDb(List<ExpensesModel> list) async {
     try {
-      await _helper.insertExpensesDb(list);
+      await _helper.insertExpenseDb(list);
     } catch (err) {
       debugPrint("SaveExpensesListDb: ${err.toString()}");
     }
@@ -61,7 +62,7 @@ class DataRepository {
 
   Future<void> updateExpensesDb(ExpensesModel expense) async {
     try {
-      await _helper.updateExpensesDb(expense);
+      await _helper.updateExpenseDb(expense);
     } catch (e) {
       debugPrint("updateProducerDb: erro $e");
     }

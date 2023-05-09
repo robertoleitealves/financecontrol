@@ -1,4 +1,4 @@
-import '../../../database/database_provider.dart';
+import '../../../db/database_provider_tg.dart';
 import '../../../model/credit_card_model.dart';
 import '../../../model/user_model.dart';
 
@@ -10,14 +10,14 @@ class CreditCardRepository {
   }
 
   Future<CreditCardModel> getCreditCardByCreditCardId(int cultureId) async {
-    List<CreditCardModel> creditCardList = await _helper.getCreditCardsListDb();
+    List<CreditCardModel> creditCardList = await _helper.getCreditCardListDb();
     return creditCardList
         .where((creditCard) => creditCard.idCreditCard == cultureId)
         .first;
   }
 
   Future<List<CreditCardModel>> getCreditCard() async {
-    return await _helper.getCreditCardsListDb();
+    return await _helper.getCreditCardListDb();
   }
 
   Future saveCreditCardByUser({
@@ -37,8 +37,8 @@ class CreditCardRepository {
     return await _helper.updateCreditCardDb(creditCard);
   }
 
-  Future<int> deleteProducerDb(int userId) async {
-    await _helper.deleteAllCreditCardByUserDb(userId);
-    return await _helper.deleteUserDb(userId);
-  }
+  // Future<int> deleteUserDb(int userId) async {
+  //   await _helper.deleteAllCreditCardByUserDb(userId);
+  //   return await _helper.deleteUserDb(userId);
+  // }
 }
