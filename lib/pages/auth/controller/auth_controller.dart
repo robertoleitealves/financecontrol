@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 import '../../../constants/storage_keys.dart';
 import '../../../db/database_provider_tg.dart';
@@ -26,9 +23,8 @@ class AuthController extends GetxController {
   Token? token;
 
   // SIGNUP CONTROLLERS
-  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
-  final passwordConfirmedController = TextEditingController();
   final nameController = TextEditingController();
   final passwordSignInController = TextEditingController();
   final passwordConfirmController = TextEditingController();
@@ -48,8 +44,6 @@ class AuthController extends GetxController {
     // Recuperar o token que foi salvo localmente
     String? token = await utilServices.getLocalData(key: StorageKeys.token);
     if (token == null) {
-      InitialController().loadData();
-      
       Get.offAllNamed(PagesRoute.signInRoute);
       return;
     }
@@ -95,7 +89,8 @@ class AuthController extends GetxController {
   // DESATIVAR USUÁRIO
   Future disableUser() async {
     isLoading.value = true;
-    final response = await authRepository.disableUser(user.idUser!, token!.token);
+    final response =
+        await authRepository.disableUser(user.idUser!, token!.token);
     isLoading.value = false;
     return response;
   }
@@ -139,41 +134,35 @@ class AuthController extends GetxController {
 
   // LOGAR USUÁRIO
   Future<void> signIn() async {
-    if (connectivity.isNotConnected) {
-      isLoading.value = true;
-      AuthResult result = await authRepository.signin(
-          name: user.name!, password: user.password!);
+    isLoading.value = true;
+    AuthResult result = await authRepository.signin(
+        nameUser: user.name!, password: user.password!);
 
-      isLoading.value = false;
+    isLoading.value = false;
 
-      result.when(
-        success: (authResponse) async {
-          try {
-            await helper.saveUserDb(authResponse.user);
+    result.when(
+      success: (authResponse) async {
+        try {
+          await helper.saveUserDb(authResponse.user);
 
-            await helper.saveTokenDb(
-              TokenModel(
-                token: authResponse.token.token,
-                userId: authResponse.user.id,
-              ),
-            );
-            debugPrint("Token: ${authResponse.token.token}");
-          } catch (err) {
-            Get.snackbar('Erro database', err.toString());
-          }
-          user = authResponse.user;
-          token = authResponse.token;
-          saveTokenAndProceedToBase();
-        },
-        error: (message) {
-          utilServices.showToast(message: message, isError: true);
-        },
-      );
-    } else {
-      utilServices.showToast(
-          message:
-              "Você precisa estar conectado a internet. Verifique sua conexão e tente novamente.");
-    }
+          await helper.saveTokenDb(
+            TokenModel(
+              token: authResponse.token.token,
+              userId: authResponse.user.id,
+            ),
+          );
+          debugPrint("Token: ${authResponse.token.token}");
+        } catch (err) {
+          Get.snackbar('Erro database', err.toString());
+        }
+        user = authResponse.user;
+        token = authResponse.token;
+        saveTokenAndProceedToBase();
+      },
+      error: (message) {
+        utilServices.showToast(message: message, isError: true);
+      },
+    );
   }
 
   // SALVAR TOKEN LOCAL
@@ -191,7 +180,6 @@ class AuthController extends GetxController {
     }
 
     passwordController.clear();
-    passwordConfirmedController.clear();
 
     nameController.clear();
     phoneNumberController.clear();

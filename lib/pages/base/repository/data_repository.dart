@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 import '../../../db/database_provider_tg.dart';
 import '../../../model/credit_card_model.dart';
 import '../../../model/expenses_model.dart';
@@ -22,15 +23,15 @@ class DataRepository {
     try {
       await _helper.insertCreditCardsDb(list);
     } catch (err) {
-      debugPrint("SaveCreditCardListDb: ${err.toString()}");
+      debugPrint("SaveCreditCardsListDb: ${err.toString()}");
     }
   }
 
-  Future<List<CreditCardModel>> getCreditCardsListDb() async {
+  Future<List<CreditCardModel>> getCreditCardListDb() async {
     try {
       return await _helper.getCreditCardListDb();
     } catch (err) {
-      debugPrint("getCreditCardsListDb: ${err.toString()}");
+      debugPrint("getCreditCardListDb: ${err.toString()}");
       return <CreditCardModel>[];
     }
   }
@@ -39,7 +40,7 @@ class DataRepository {
     try {
       await _helper.insertExpenseDb(list);
     } catch (err) {
-      debugPrint("SaveExpensesListDb: ${err.toString()}");
+      debugPrint("SaveExpenseListDb: ${err.toString()}");
     }
   }
 
@@ -47,10 +48,12 @@ class DataRepository {
     try {
       return await _helper.getExpensesListDb();
     } catch (err) {
-      debugPrint("getExpensesListDb: ${err.toString()}");
+      debugPrint("getFarmsListDb: ${err.toString()}");
       return <ExpensesModel>[];
     }
   }
+
+ 
 
   Future<void> updateCreditCardDb(CreditCardModel creditCard) async {
     try {
@@ -60,11 +63,13 @@ class DataRepository {
     }
   }
 
-  Future<void> updateExpensesDb(ExpensesModel expense) async {
+  Future<void> updateExpenseDb(ExpensesModel expense) async {
     try {
       await _helper.updateExpenseDb(expense);
     } catch (e) {
-      debugPrint("updateProducerDb: erro $e");
+      debugPrint("updateExpenseDb: erro $e");
     }
   }
+
+ 
 }

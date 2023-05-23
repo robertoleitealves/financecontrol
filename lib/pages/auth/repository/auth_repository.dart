@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 import '../../../db/database_provider_tg.dart';
 import '../../../model/auth_response_model.dart';
@@ -11,6 +12,7 @@ import '../result/auth_result.dart';
 
 class AuthRepository {
   final DatabaseProvider _helper = DatabaseProvider();
+  // final HttpManager _httpManager = HttpManager();
 
   // TRATATIVA DE RESPONSE USER
   AuthResult handleUserOrError(dynamic result) {
@@ -32,14 +34,31 @@ class AuthRepository {
     }
   }
 
+  // TRATATIVA DE RESPONSE
+
+  // VALIDAR TOKEN
+  Future<AuthResult> validateToken(String token) async {
+    try {
+      // final result = await _httpManager.restRequest(
+      //   url: Endpoints.validateToken,
+      //   method: HttpMethods.get,
+      //   headers: {'Authorization': 'Bearer $token'},
+      // );
+
+      return handleUserOrError();
+    } catch (e) {
+      return AuthResult.error(authErrors(e.statusCode));
+    }
+  }
+
   // LOGAR
   Future<AuthResult> signin(
-      {required String name, required String password}) async {
+      {required String nameUser, required String password}) async {
     String encodedPassword = base64.encode(utf8.encode(password));
 
     try {
       Map body = UserAuthModel(
-        nameUser: name,
+        nameUser: nameUser,
         password: encodedPassword,
         identity: 1,
       ).toJson();
@@ -50,13 +69,13 @@ class AuthRepository {
       //   body: body,
       // );
 
-      return handleUserOrError(result);
-    } on ErrorRequest catch (e) {
-      return AuthResult.error(authErrors(e.statusCode));
+      return AuthResult.success(Response);
+    } catch (e) {
+      return AuthResult.error();
     }
   }
 
-  // // CADASTRAR
+  // CADASTRAR
   Future<AuthResult> signUp(UserModel user) async {
     String encodedPassword = base64.encode(utf8.encode(user.password!));
 
@@ -70,39 +89,30 @@ class AuthRepository {
       //   body: auxUser,
       // );
 
-      return handleUserOrError(result);
-    } on ErrorRequest catch (e) {
+      return AuthResult.success(Response);
+    } catch (e) {
       return AuthResult.error(authErrors(e.statusCode));
     }
   }
 
   // REDEFINIR SENHA
   Future<AuthResult> resetPassword(String email) async {
-    // final response = await _httpManager.restRequest(
-    //   url: Endpoints.recoverPassword + "?email=$email",
-    //   method: HttpMethods.post,
-    //   body: {'email': email},
-    // );
+    final response = await _httpManager.restRequest(
+      body: {'email': email},
+    );
 
     return handleUserOrError(response);
   }
 
-  // // DESATIVAR USUÁRIO
+  // DESATIVAR USUÁRIO
   Future disableUser(int userId, String token) async {
     try {
-      // final response = await _httpManager.restRequest(
-      //   url: Endpoints.disableUser + '?userId=$userId',
-      //   method: HttpMethods.post,
-      //   headers: {"Authorization": "Bearer $token"},
-      // );
+      final response = await _httpManager.restRequest(
+        headers: {"Authorization": "Bearer $token"},
+      );
       return response;
-    } on ErrorRequest catch (e) {
+    } catch (e) {
       log("Erro ao desativar usuário", name: 'disableUser', error: e);
     }
-  }
-
-  // BUSCAR USER DB LOCAL
-  Future<UserModel> getUserDb() async {
-    return await _helper.getUserDb();
   }
 }

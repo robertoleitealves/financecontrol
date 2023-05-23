@@ -1,6 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 import '../constants/db_constants.dart';
+import 'expenses_model.dart';
 
 // part 'credit_card_model.g.dart';
 
@@ -12,6 +15,7 @@ class CreditCardModel extends Equatable {
   String? validateDate;
   double? limitValueCard; //LIMITE TOTAL
   double? avaliableLimitCard; //LIMITE DISPONÍVEL
+  List<ExpensesModel>? expenses;
   CreditCardModel({
     this.idCreditCard,
     this.idUser,
@@ -19,6 +23,7 @@ class CreditCardModel extends Equatable {
     this.validateDate,
     this.limitValueCard,
     this.avaliableLimitCard,
+    this.expenses,
   });
 
   @override
@@ -53,4 +58,7 @@ class CreditCardModel extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [idCreditCard];
+
+  @override
+  bool get stringify => true;
 }

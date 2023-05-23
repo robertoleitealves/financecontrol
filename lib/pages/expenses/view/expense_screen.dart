@@ -1,11 +1,12 @@
 import 'package:financecontrol/components/customcolors.dart';
+import 'package:financecontrol/model/expenses_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controller/expenses_controller.dart';
 
 class ExpenseScreen extends StatelessWidget {
-  ExpenseScreen({super.key});
+  ExpenseScreen({super.key, required ExpensesModel expense});
   final _controller = Get.find<ExpensesController>();
   @override
   Widget build(BuildContext context) {

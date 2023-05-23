@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../model/credit_card_model.dart';
+
 class CreditCardController extends GetxController {
   List creditCardList = [
     {
@@ -101,8 +103,10 @@ class CreditCardController extends GetxController {
 
     update();
   }
+ List<CreditCardModel> get creditCardList => _creditCardList;
+  Future getAllCreditCards() async {
 
-  Future getAllCreditCards() async {}
+  }
   Future insertCreditCard() async {}
   Future updateCreditCard() async {}
   Future deleteCreditCard() async {}
