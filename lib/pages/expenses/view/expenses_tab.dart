@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 
 import '../../../components/customcolors.dart';
+import '../../../model/credit_card_model.dart';
 import '../controller/expenses_controller.dart';
 import 'expense_screen.dart';
 
@@ -38,14 +39,14 @@ class ExpensesTab extends StatelessWidget {
                   Expanded(
                     child: GetBuilder<ExpensesController>(
                       builder: (controller) => ListView.builder(
-                        controller: _controller.controller,
+                        controller: _controller.expenseController,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: _controller.expenses.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(
-                              _controller.expenses[index]['market'],
+                              _controller.listExpenses[index].market!,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -54,8 +55,8 @@ class ExpensesTab extends StatelessWidget {
                               style: const TextStyle(fontSize: 16),
                             ),
                             onTap: () {
-                              _controller.expenseSelected =
-                                  _controller.expenses[index];
+                              _controller.selectedExpense =
+                                  _controller.listExpenses[index].obs;
                               showDialog(
                                 context: context,
                                 builder: (context) => Dialog(
@@ -65,7 +66,7 @@ class ExpensesTab extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(16)),
-                                      child: ExpenseScreen()),
+                                      child: ExpenseScreen(expense: _controller.selectedExpense.value,)),
                                 ),
                               );
                               // Get.toNamed(
@@ -113,21 +114,21 @@ class ExpensesTab extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: DropdownButton(
+                                  child: DropdownButton<CreditCardModel>(
                                       borderRadius: BorderRadius.circular(16),
                                       hint: const Text('Cartão utilizado'),
                                       alignment: Alignment.center,
                                       isExpanded: true,
-                                      items: _controller.pay
-                                          .map<DropdownMenuItem<String>>(
+                                      items: _controller.creditCardList
+                                          .map<DropdownMenuItem<CreditCardModel>>(
                                               (value) {
-                                        return DropdownMenuItem<String>(
+                                        return DropdownMenuItem<CreditCardModel>(
                                           value: value,
-                                          child: Text(value),
+                                          child: Text(value.nameCreditCard!),
                                         );
                                       }).toList(),
-                                      onChanged: (value) {
-                                        _controller.selectedPay = value;
+                                      onChanged: (CreditCardModel? value) {
+                                        _controller.creditSelected = value!;
                                       }),
                                 ),
                                const  CustomTextField(

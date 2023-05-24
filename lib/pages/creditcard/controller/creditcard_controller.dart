@@ -1,113 +1,186 @@
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
+import 'dart:developer';
 
-import '../../../model/credit_card_model.dart';
+import 'package:financecontrol/model/credit_card_model.dart';
+import 'package:financecontrol/pages/creditcard/repository/creditcard_repository.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import '../../../../model/expenses_model.dart';
+import '../../../../model/user_model.dart';
+import '../../../../services/services/validators.dart';
+import '../../../../services/utils_services.dart';
+import '../../base/controller/data_controller.dart';
 
 class CreditCardController extends GetxController {
-  List creditCardList = [
-    {
-      'creditCard': 'Nubank',
-      'avaliableLimit': 48.5,
-      'expensesValue': 151.5,
-      'valueLimit': 200.0,
-      'expensesCard': [
-        {
-          'market': 'Casa da Mãe Joana',
-          'object': 'Bebidas',
-          'date': '13/04/2022',
-          'value': 30,
-          'installments': 01
-        },
-        {
-          'market': 'Irmãos Patrocínio',
-          'object': 'Compras',
-          'date': '02/04/2022',
-          'value': 75,
-          'installments': 01
-        },
-        {
-          'market': 'Becks',
-          'object': 'Cerveja',
-          'date': '07/04/2022',
-          'value': 36.5,
-          'installments': 01
-        }
-      ]
-    },
-    {
-      'creditCard': 'C6',
-      'avaliableLimit': 50.0,
-      'expensesValue': 150.0,
-      'valueLimit': 200.0,
-      'expensesCard': [
-        {
-          'market': 'Casa da Mãe Joana',
-          'object': 'Bebidas',
-          'date': '13/04/2022',
-          'value': 30,
-          'installments': 01
-        },
-        {
-          'market': 'Irmãos Patrocínio',
-          'object': 'Compras',
-          'date': '02/04/2022',
-          'value': 75,
-          'installments': 01
-        },
-        {
-          'market': 'Becks',
-          'object': 'Cerveja',
-          'date': '07/04/2022',
-          'value': 36.5,
-          'installments': 01
-        }
-      ]
-    },
-    {
-      'creditCard': 'Next',
-      'avaliableLimit': 30.0,
-      'expensesValue': 120.0,
-      'valueLimit': 150.0,
-      'expensesCard': [
-        {
-          'market': 'Casa da Mãe Joana',
-          'object': 'Bebidas',
-          'date': '13/04/2022',
-          'value': 30,
-          'installments': 01
-        },
-        {
-          'market': 'Irmãos Patrocínio',
-          'object': 'Compras',
-          'date': '02/04/2022',
-          'value': 75,
-          'installments': 01
-        },
-        {
-          'market': 'Becks',
-          'object': 'Cerveja',
-          'date': '07/04/2022',
-          'value': 36.5,
-          'installments': 01
-        }
-      ]
-    },
-  ];
+  final ScrollController creditController = ScrollController();
+  final _dataController = Get.find<DataController>();
+  final _repository = CreditCardRepository();
+  final RxList<ExpensesModel> _expenseList = <ExpensesModel>[].obs;
+  final _utilsServices = UtilsServices();
+  UserModel? user;
+  final searchFieldController = TextEditingController();
+  final RxList<CreditCardModel> creditList = <CreditCardModel>[].obs;
+  final Rx<CreditCardModel> selectedCreditCard = CreditCardModel().obs;
+  final RxBool isLoading = false.obs;
+  final double sum = 0.00;
+  // ------------- CREATE USER ------------------- //
+  final TextEditingController cpfController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController birthdateController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
-  Map? creditCardSelected;
-  double sum = 128.5;
-  final controller = ScrollController();
+  final userFormKey = GlobalKey<FormState>();
+  final RxBool _isCpf = true.obs;
 
-  Future creditCardSelect(Map itemSelected) async {
-    creditCardSelected = itemSelected;
+  // ------------- CREATE CREDITCARD ----------------------- //
 
+  final TextEditingController _nameCreditCardController =
+      TextEditingController();
+  final TextEditingController _limitValueController = TextEditingController();
+  final TextEditingController _validateDateController = TextEditingController();
+  final creditCardFormKey = GlobalKey<FormState>();
+
+  List<CreditCardModel> get creditCardList => creditList;
+  CreditCardModel get selectedCard => selectedCreditCard.value;
+  @override
+  void onInit() {
+    super.onInit();
+
+    creditList.addAll(_dataController.creditCardList);
+  }
+
+  set setCreditCard(CreditCardModel creditCard) =>
+      selectedCreditCard.value = creditCard;
+
+  bool get isCpf => _isCpf.value;
+
+  // void filterByCreditCard() {
+  //   creditList.clear();
+  //   for (var creditCard in _dataController.creditCard) {
+  //     if (creditCard.nameCreditCard!
+  //         .toLowerCase()
+  //         .contains(searchCreditCard.value.toLowerCase())) {
+  //       creditList.add(creditCard);
+  //     }
+  //   }
+  // }
+
+  // CARREGAMENTO DOS DADOS DE FAZENDA/TALHÃO
+  Future<void> _loadCreditCardListByUser(int userId) async {
+    creditList.clear();
+    List<CreditCardModel> _creditCardAux = _dataController.creditCardList
+        .where((creditCard) => creditCard.idUser == userId)
+        .toList();
+    for (var creditCard in _creditCardAux) {
+      creditCard.expenses = _dataController.expense
+          .where((expense) => expense.idCreditCard == creditCard.idCreditCard)
+          .toList();
+
+      creditList.add(creditCard);
+    }
+  }
+
+  void onCreditCardSelect(CreditCardModel creditCard) {
+    selectedCreditCard.value = creditCard;
+    selectedCreditCard.value.expenses ??= <ExpensesModel>[];
+    _expenseList.assignAll(selectedCreditCard.value.expenses!);
     update();
   }
- List<CreditCardModel> get creditCardList => _creditCardList;
-  Future getAllCreditCards() async {
 
+  // void changeMask(String? numbers) {
+  //   if (numbers != null) {
+  //     String newText = numbers.replaceAll(RegExp(r'[^\d]'), "");
+  //     if (newText.length == 11) {
+  //       newText = newText.substring(0, 3) +
+  //           "." +
+  //           newText.substring(3, 6) +
+  //           "." +
+  //           newText.substring(6, 9) +
+  //           "-" +
+  //           newText.substring(9, 11);
+  //     } else if (newText.length == 14) {
+  //       newText = newText.substring(0, 2) +
+  //           "." +
+  //           newText.substring(2, 5) +
+  //           "." +
+  //           newText.substring(5, 8) +
+  //           "/" +
+  //           newText.substring(8, 12) +
+  //           "-" +
+  //           newText.substring(12, 14);
+  //     }
+  //     _cpfCnpjController.value = _cpfCnpjController.value.copyWith(
+  //       text: newText,
+  //       selection: TextSelection.collapsed(offset: newText.length),
+  //     );
+  //   }
+  // }
+
+  String? validatorCPF(String? value) {
+    if (value != null) {
+      _isCpf.value = true;
+      return Validators.cpfValidator(value);
+    }
+    return 'CPF obrigatório';
   }
-  Future insertCreditCard() async {}
-  Future updateCreditCard() async {}
-  Future deleteCreditCard() async {}
+
+  void saveUser({CreditCardModel? creditModel}) async {
+    if (userFormKey.currentState!.validate()) {
+      if (creditModel != null) {
+        creditModel.idUser = user?.idUser;
+        creditModel.nameCreditCard = _nameCreditCardController.text.trim();
+        creditModel.limitValueCard = double.parse(_limitValueController.text);
+        creditModel.validateDate = _validateDateController.text;
+        creditModel.user = await _repository.getUserModelDB();
+
+        await _repository.updateCreditCardDb(creditModel);
+        await _dataController.loadData();
+        creditList.assignAll(_dataController.creditCardList);
+        Get.back();
+        clearCreditCardControllers();
+      } else {
+        CreditCardModel creditCard = CreditCardModel();
+
+        creditCard.validateDate = _validateDateController.text;
+        creditCard.nameCreditCard = _nameCreditCardController.text;
+        creditCard.limitValueCard = double.parse(_limitValueController.text);
+
+        creditCard.idCreditCard =
+            await _repository.saveNewCreditCardDB(creditCard);
+        _dataController.creditCardList.add(creditCard);
+        creditList.assignAll(_dataController.creditCardList);
+        Get.back();
+        clearCreditCardControllers();
+        // openCreditCardDetails(_creditCardList.last);
+      }
+    } else {
+      _utilsServices.showToast(
+        message: "Todos os dados devem ser preenchidos",
+        isError: true,
+      );
+    }
+  }
+
+  Future<void> deleteCreditCardDb(int creditCardId) async {
+    try {
+      await _repository.deleteCreditCardDb(creditCardId);
+      creditList.removeWhere((credit) => credit.idCreditCard == creditCardId);
+      _utilsServices.showToast(message: 'Cartão excluído com sucesso!');
+      Get.back();
+      Get.back();
+    } on Exception catch (e, s) {
+      log('Erro ao deletar',
+          name: 'deleteCreditCardDb', error: e, stackTrace: s);
+    }
+  }
+
+  void clearCreditCardControllers() {
+    _nameCreditCardController.clear();
+    _limitValueController.clear();
+    _validateDateController.clear();
+  }
 }

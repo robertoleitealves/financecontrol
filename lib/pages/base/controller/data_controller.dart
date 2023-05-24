@@ -12,12 +12,12 @@ class DataController extends GetxController {
   String? _token;
   bool _isLoading = true;
 
-  late List<CreditCardModel> _creditCards = [];
+  late List<CreditCardModel> _creditCardsList = [];
   late List<ExpensesModel> _expenses = [];
 
   UserModel get user => _user;
 
-  List<CreditCardModel> get creditCard => _creditCards;
+  List<CreditCardModel> get creditCardList => _creditCardsList;
   List<ExpensesModel> get expense => _expenses;
   String get token => _token!;
   bool get isLoading => _isLoading;
@@ -31,7 +31,7 @@ class DataController extends GetxController {
   Future<void> loadData() async {
     _user = await _repository.getUserModelDB();
     _token = await _repository.getTokenDb();
-    _creditCards = await _repository.getCreditCardListDb();
+    _creditCardsList = await _repository.getCreditCardListDb();
     _expenses = await _repository.getExpensesListDb();
   }
 }

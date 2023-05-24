@@ -1,31 +1,22 @@
 import '../../../db/database_provider_tg.dart';
 import '../../../model/credit_card_model.dart';
+import '../../../model/expenses_model.dart';
 import '../../../model/user_model.dart';
 
-class CreditCardRepository {
+class ExpensesRepository {
   final _helper = DatabaseProvider();
 
   Future<UserModel> getUserModelDB() async {
     return await _helper.getUserDb();
   }
 
-  Future<CreditCardModel> getCreditCardByCreditCardId(int cultureId) async {
-    List<CreditCardModel> creditCardList = await _helper.getCreditCardListDb();
-    return creditCardList
-        .where((creditCard) => creditCard.idCreditCard == cultureId)
-        .first;
-  }
 
-  Future<List<CreditCardModel>> getCreditCard() async {
-    return await _helper.getCreditCardListDb();
-  }
-
-  Future saveCreditCardByUser({
-    required int userId,
-    required CreditCardModel creditCard,
+  Future saveExpensesByCreditCard({
+    required int creditCardId,
+    required ExpensesModel expense,
   }) async {
-    creditCard.idUser = userId;
-    await _helper.saveCreditCardDB(creditCard);
+    expense.idCreditCard = creditCardId;
+    await _helper.saveExpenseDB(expense);
   }
 
   // PRODUCER
@@ -37,8 +28,23 @@ class CreditCardRepository {
     return await _helper.updateCreditCardDb(creditCard);
   }
 
-  // Future<int> deleteUserDb(int userId) async {
-  //   await _helper.deleteAllCreditCardByUserDb(userId);
-  //   return await _helper.deleteUserDb(userId);
-  // }
+  Future<int> deleteCreditCardDb(int creditCardId) async {
+    await _helper.deleteAllExpensesByCreditCardDb(creditCardId);
+    return await _helper.deleteCreditCardDb(creditCardId);
+  }
+
+  // FARM
+  Future<int> saveNewExpenseDB(ExpensesModel expense) async {
+    return await _helper.saveExpenseDB(expense);
+  }
+
+  Future<int> updateExpenseDb(ExpensesModel expense) async {
+    return await _helper.updateExpenseDb(expense);
+  }
+
+  Future<int> deleteExpenseDb(int expenseId) async {
+    return await _helper.deleteExpensesDb(expenseId);
+  }
+
+
 }

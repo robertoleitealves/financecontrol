@@ -32,26 +32,26 @@ class CreditCardTab extends StatelessWidget {
                   Expanded(
                     child: GetBuilder<CreditCardController>(
                         builder: (controller) => ListView.builder(
-                            controller: _controller.controller,
+                            controller: _controller.creditController,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: _controller.creditCardList.length,
+                            itemCount: _controller.creditList.length,
                             itemBuilder: (context, index) {
                               return ListTile(
                                   title: Text(
-                                    _controller.creditCardList[index]
-                                        ['creditCard'],
+                                    _controller
+                                        .creditList[index].nameCreditCard!,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
                                   subtitle: Text(
-                                    'R\$ ${_controller.creditCardList[index]['avaliableLimit']}',
+                                    'R\$ ${_controller.creditList[index].avaliableLimitCard}',
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   onTap: () {
-                                    _controller.creditCardSelect(
-                                        _controller.creditCardList[index]);
+                                    _controller.onCreditCardSelect(
+                                        _controller.creditList[index]);
 
                                     showDialog(
                                       context: context,
@@ -74,7 +74,8 @@ class CreditCardTab extends StatelessWidget {
               Text(
                 'Total das faturas: ${_controller.sum}',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -117,8 +118,7 @@ class CreditCardTab extends StatelessWidget {
                                     icon: Icons.numbers),
                                 const CustomTextField(
                                     keyboardType: TextInputType.number,
-                                    padding:
-                                         EdgeInsets.symmetric(vertical: 8),
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Limite total: ',
                                     icon: Icons.numbers),
                                 ElevatedButton(

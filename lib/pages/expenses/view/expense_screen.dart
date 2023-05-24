@@ -23,7 +23,7 @@ class ExpenseScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                _controller.expenseSelected!['market'],
+                _controller.selectedExpense.value.market!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -37,18 +37,7 @@ class ExpenseScreen extends StatelessWidget {
                   const TextSpan(
                       text: 'Dia: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: _controller.expenseSelected!['date'])
-                ],
-              ),
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  const TextSpan(
-                      text: 'Despesa: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: _controller.expenseSelected!['expense'])
+                  TextSpan(text: _controller.selectedExpense.value.createdAt),
                 ],
               ),
               style: const TextStyle(fontSize: 16),
@@ -59,7 +48,9 @@ class ExpenseScreen extends StatelessWidget {
                   const TextSpan(
                       text: 'Forma de pagamento: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: _controller.expenseSelected!['payment']),
+                  TextSpan(
+                      text: _controller
+                          .selectedExpense.value.creditCard?.nameCreditCard),
                 ],
               ),
               style: const TextStyle(fontSize: 16),
@@ -71,7 +62,7 @@ class ExpenseScreen extends StatelessWidget {
                       text: 'Parcelas: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: _controller.expenseSelected!['installments']
+                      text: _controller.selectedExpense.value.installments
                           .toString())
                 ],
               ),
@@ -85,7 +76,7 @@ class ExpenseScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                      text: _controller.expenseSelected!['purchaseValue']
+                      text: _controller.selectedExpense.value.purchaseValue
                           .toString())
                 ],
               ),
@@ -93,7 +84,7 @@ class ExpenseScreen extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: _controller.expenseSelected!['installments'] <= 1
+              child: _controller.selectedExpense.value.installments! <= 1
                   ? ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(

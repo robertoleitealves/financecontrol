@@ -67,16 +67,7 @@ class Validators {
     return null;
   }
 
-  static String? cepValidator(String? cep) {
-    final RegExp _cepRegExp = RegExp(r'[0-9]{5}-[0-9]{3}');
-    if (cep == null || cep.isEmpty) {
-      return "Digite o CEP";
-    }
-    if (!_cepRegExp.hasMatch(cep)) {
-      return 'Digite um cep válido';
-    }
-    return null;
-  }
+  
 
   static String? dateValidator(String? dateStr) {
     if (dateStr != null && dateStr.isNotEmpty) {
