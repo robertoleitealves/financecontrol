@@ -25,7 +25,7 @@ class UserModel {
   }
 
   Map<String, dynamic> toMapDB() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data[userNameColumn] = name;
     data[userCpfColumn] = cpfNumber;
     data[userBirthdateColumn] = birthdate;

@@ -30,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 label: 'Nome',
                 icon: Icons.person,
-                controller: _controller.nameController,
+                controller: _controller.nameSignUpController,
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               CustomTextField(
@@ -48,13 +48,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 label: 'CPF',
                 icon: Icons.numbers,
-                controller: _controller.cpfController,
+                controller: _controller.cpfSignUpController,
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               CustomTextField(
                 label: 'Digite uma senha',
                 icon: Icons.numbers,
-                controller: _controller.passwordController,
+                controller: _controller.passwordSignUpController,
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               CustomTextField(

@@ -4,7 +4,6 @@ import 'package:financecontrol/model/credit_card_model.dart';
 import 'package:financecontrol/pages/creditcard/repository/creditcard_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../model/expenses_model.dart';
 import '../../../../model/user_model.dart';
@@ -20,7 +19,7 @@ class CreditCardController extends GetxController {
   final _utilsServices = UtilsServices();
   UserModel? user;
   final searchFieldController = TextEditingController();
-  final RxList<CreditCardModel> creditList = <CreditCardModel>[].obs;
+  RxList<CreditCardModel> creditList = <CreditCardModel>[].obs;
   final Rx<CreditCardModel> selectedCreditCard = CreditCardModel().obs;
   final RxBool isLoading = false.obs;
   final double sum = 0.00;
@@ -49,8 +48,6 @@ class CreditCardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    creditList.addAll(_dataController.creditCardList);
   }
 
   set setCreditCard(CreditCardModel creditCard) =>
@@ -58,29 +55,22 @@ class CreditCardController extends GetxController {
 
   bool get isCpf => _isCpf.value;
 
-  // void filterByCreditCard() {
-  //   creditList.clear();
-  //   for (var creditCard in _dataController.creditCard) {
-  //     if (creditCard.nameCreditCard!
-  //         .toLowerCase()
-  //         .contains(searchCreditCard.value.toLowerCase())) {
-  //       creditList.add(creditCard);
-  //     }
-  //   }
-  // }
-
   // CARREGAMENTO DOS DADOS DE FAZENDA/TALHÃO
-  Future<void> _loadCreditCardListByUser(int userId) async {
+  Future<void> loadCreditCardListByUser(int userId) async {
     creditList.clear();
-    List<CreditCardModel> _creditCardAux = _dataController.creditCardList
-        .where((creditCard) => creditCard.idUser == userId)
-        .toList();
-    for (var creditCard in _creditCardAux) {
-      creditCard.expenses = _dataController.expense
-          .where((expense) => expense.idCreditCard == creditCard.idCreditCard)
+    if (_dataController.creditCardList != null) {
+      List<CreditCardModel> creditCardAux = _dataController.creditCardList
+          .where((creditCard) => creditCard.idUser == userId)
           .toList();
+      for (var creditCard in creditCardAux) {
+        creditCard.expenses = _dataController.expense
+            .where((expense) => expense.idCreditCard == creditCard.idCreditCard)
+            .toList();
 
-      creditList.add(creditCard);
+        creditList.add(creditCard);
+      }
+    } else {
+      creditList = <CreditCardModel>[].obs;
     }
   }
 

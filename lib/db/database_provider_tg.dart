@@ -4,7 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import '../constants/db_constants.dart';
 import '../model/credit_card_model.dart';
 import '../model/expenses_model.dart';
-import '../model/token_model.dart';
 import '../model/user_model.dart';
 
 class DatabaseProvider {
@@ -27,7 +26,7 @@ class DatabaseProvider {
   initDb() async {
     // Get a location using getDatabasesPath
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'iz_consultores.db');
+    String path = join(databasePath, 'financial_control.db');
     // Abrindo um database
     Database myDb = await openDatabase(path,
         version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
@@ -36,8 +35,8 @@ class DatabaseProvider {
 
   // CLOSE DATABASE
   Future close() async {
-    final _db = await _instance.db;
-    _db.close();
+    final db = await _instance.db;
+    db.close();
   }
 
   // METHODS
@@ -99,7 +98,7 @@ class DatabaseProvider {
             $userCpfColumn TEXT,
             $userBirthdateColumn TEXT,
             $userPhoneColumn TEXT,
-            $userPasswordColumn INTEGER,
+            $userPasswordColumn TEXT
  
           )
           ''');
@@ -113,7 +112,7 @@ class DatabaseProvider {
               $expenseUserIdColumn INTEGER,
               $expenseInstallmentsColumn INTEGER,
               $expenseCreatedAtColumn TEXT,
-              $expensePurchaseValueColumn REAL,
+              $expensePurchaseValueColumn REAL
         
             )
             ''');
@@ -126,7 +125,7 @@ class DatabaseProvider {
               $creditCardNameColumn TEXT,
               $creditCardValidateDateColumn TEXT,
               $creditCardAvaliableLimitColumn REAL,
-              $creditCardLimitValueColumn TEXT,
+              $creditCardLimitValueColumn TEXT
              
             )
             ''');
@@ -143,7 +142,6 @@ class DatabaseProvider {
 
   // USER
   Future<int> saveUserDb(UserModel user) async {
-    await deleteData(table: userTable);
     var id = await insertData(userTable, user.toMapDB());
     return id;
   }
@@ -155,24 +153,30 @@ class DatabaseProvider {
     return response;
   }
 
-  Future<int> updateUserDb(UserModel user) async {
-    int result = await updateData(
-      userTable,
-      user.toMapDB(),
-    );
+  Future signIn(String name, String password) async {
+    final result = await readData(
+        table: userTable,
+        where: '$userNameColumn = ? AND $userPasswordColumn = ?',
+        whereargs: [name, password]);
     return result;
   }
 
-  // AUTH
-  Future<int> saveTokenDb(TokenModel tokenModel) async {
-    await deleteData(table: authUserTable);
-    return await insertData(authUserTable, tokenModel.toMapDb());
+  Future<int> updateUserDb(UserModel user, String cpfNumber) async {
+    int result = await updateData(userTable, user.toMapDB(),
+        where: '$userCpfColumn = ?', args: [cpfNumber]);
+    return result;
   }
 
-  Future<TokenModel> getTokenDb() async {
-    List result = await readData(table: authUserTable);
-    return TokenModel.fromMapDb(result.first);
-  }
+  // // AUTH
+  // Future<int> saveTokenDb(TokenModel tokenModel) async {
+  //   await deleteData(table: authUserTable);
+  //   return await insertData(authUserTable, tokenModel.toMapDb());
+  // }
+
+  // Future<TokenModel> getTokenDb() async {
+  //   List result = await readData(table: authUserTable);
+  //   return TokenModel.fromMapDb(result.first);
+  // }
 
   // CREDIT CARDS
   Future<int> insertCreditCardsDb(List<CreditCardModel> values) async {
@@ -287,6 +291,4 @@ class DatabaseProvider {
       whereargs: [expenseId],
     );
   }
-
- 
 }

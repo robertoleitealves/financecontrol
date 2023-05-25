@@ -221,7 +221,7 @@ class ProfileTab extends StatelessWidget {
                                               BorderRadius.circular(16)),
                                     ),
                                     onPressed: () {
-                                      _controller.disableUser();
+                                      _controller.onDelete();
                                     },
                                     child: const Text('Apagar conta'),
                                   ),

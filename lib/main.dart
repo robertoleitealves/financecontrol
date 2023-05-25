@@ -1,16 +1,11 @@
 import 'package:financecontrol/pages/auth/controller/auth_controller.dart';
-import 'package:financecontrol/pages/creditcard/controller/creditcard_controller.dart';
-import 'package:financecontrol/pages/expenses/controller/expenses_controller.dart';
 import 'package:financecontrol/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-
 void main() {
   Get.put(AuthController());
-  Get.put(ExpensesController());
-  Get.put(CreditCardController());
+
   runApp(const FinancialControl());
 }
 

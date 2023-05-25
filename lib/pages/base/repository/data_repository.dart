@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../db/database_provider_tg.dart';
 import '../../../model/credit_card_model.dart';
 import '../../../model/expenses_model.dart';
-import '../../../model/token_model.dart';
+
 import '../../../model/user_model.dart';
 
 class DataRepository {
   final DatabaseProvider _helper = DatabaseProvider();
 
-  Future<String> getTokenDb() async {
-    TokenModel token = await _helper.getTokenDb();
-    return token.token!;
-  }
+  // Future<String> getTokenDb() async {
+  //   TokenModel token = await _helper.getTokenDb();
+  //   return token.token!;
+  // }
 
   Future<UserModel> getUserModelDB() async {
     return await _helper.getUserDb();
@@ -53,8 +52,6 @@ class DataRepository {
     }
   }
 
- 
-
   Future<void> updateCreditCardDb(CreditCardModel creditCard) async {
     try {
       await _helper.updateCreditCardDb(creditCard);
@@ -70,6 +67,4 @@ class DataRepository {
       debugPrint("updateExpenseDb: erro $e");
     }
   }
-
- 
 }

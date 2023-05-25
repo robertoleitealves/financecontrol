@@ -6,12 +6,12 @@ part 'user_auth_model.g.dart';
 class UserAuthModel {
   String nameUser;
   String password;
-  int identity; // APP - 1 | WEB - 2
+
 
   UserAuthModel({
     required this.nameUser,
     required this.password,
-    required this.identity,
+
   });
 
   factory UserAuthModel.fromJson(Map<String, dynamic> json) =>

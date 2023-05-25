@@ -59,10 +59,8 @@ class CreditCardModel {
 
   // Map<String, dynamic> toJson() => _$CreditCardToJson(this);
 
-  @override
   // TODO: implement props
   List<Object?> get props => [idCreditCard];
 
-  @override
   bool get stringify => true;
 }

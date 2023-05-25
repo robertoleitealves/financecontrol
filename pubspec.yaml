@@ -46,7 +46,7 @@ dependencies:
   json_annotation: ^4.8.1
   build_runner: ^2.3.3
   shared_preferences: ^2.1.0
-  freezed: ^2.3.3
+  freezed: ^2.3.4
   mask_text_input_formatter: ^2.4.0
 
 dev_dependencies:

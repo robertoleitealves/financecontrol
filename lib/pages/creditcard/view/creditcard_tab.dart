@@ -30,44 +30,52 @@ class CreditCardTab extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(children: [
                   Expanded(
-                    child: GetBuilder<CreditCardController>(
-                        builder: (controller) => ListView.builder(
-                            controller: _controller.creditController,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: _controller.creditList.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                  title: Text(
-                                    _controller
-                                        .creditList[index].nameCreditCard!,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  subtitle: Text(
-                                    'R\$ ${_controller.creditList[index].avaliableLimitCard}',
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  onTap: () {
-                                    _controller.onCreditCardSelect(
-                                        _controller.creditList[index]);
+                    child: _controller.creditList != null
+                        ? GetBuilder<CreditCardController>(
+                            builder: (controller) => ListView.builder(
+                                controller: _controller.creditController,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: _controller.creditList.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                      title: Text(
+                                        _controller
+                                            .creditList[index].nameCreditCard!,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      subtitle: Text(
+                                        'R\$ ${_controller.creditList[index].avaliableLimitCard}',
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      onTap: () {
+                                        _controller.onCreditCardSelect(
+                                            _controller.creditList[index]);
 
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => Dialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                        child: Card(
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(16)),
-                                            child: CreditCardScreen()),
-                                      ),
-                                    );
-                                  });
-                            })),
+                                            child: Card(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16)),
+                                                child: CreditCardScreen()),
+                                          ),
+                                        );
+                                      });
+                                }))
+                        : Column(
+                            children: const [
+                               Expanded(
+                                  child: Text('Não há cartões cadastrados')),
+                            ],
+                          ),
                   ),
                 ]),
               ),

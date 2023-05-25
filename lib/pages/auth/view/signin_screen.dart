@@ -54,7 +54,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     CustomTextField(
                       icon: Icons.person,
                       label: 'Nome',
-                      controller: _controller.nameSignInController,
+                      controller: _controller.nameLoginController,
+                      onChanged: (value) {
+                        setState(() {
+                          _controller.nameLogin =
+                              _controller.nameLoginController.text;
+                        });
+                      },
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                     ),
                     const SizedBox(
@@ -63,8 +69,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     CustomTextField(
                       icon: Icons.lock,
                       label: 'Senha',
-                      controller: _controller.passwordSignInController,
+                      controller: _controller.passwordLoginController,
                       padding: const EdgeInsets.symmetric(vertical: 8),
+                      onChanged: (value) {
+                        setState(() {
+                          _controller.passwordLogin =
+                              _controller.passwordLoginController.text;
+                        });
+                      },
                     ),
                     const SizedBox(
                       height: 20,

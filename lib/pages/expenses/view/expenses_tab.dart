@@ -1,10 +1,8 @@
 import 'package:financecontrol/components/custom_text_field.dart';
 import 'package:financecontrol/components/customappbar.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 import '../../../components/customcolors.dart';
 import '../../../model/credit_card_model.dart';
@@ -37,45 +35,57 @@ class ExpensesTab extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(children: [
                   Expanded(
-                    child: GetBuilder<ExpensesController>(
-                      builder: (controller) => ListView.builder(
-                        controller: _controller.expenseController,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: _controller.expenses.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              _controller.listExpenses[index].market!,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                    child: _controller.expenses != null
+                        ? GetBuilder<ExpensesController>(
+                            builder: (controller) => ListView.builder(
+                              controller: _controller.expenseController,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: _controller.expenses.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(
+                                    _controller.listExpenses[index].market!,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  subtitle: Text(
+                                    'R\$ ${_controller.expenses[index]['purchaseValue']}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  onTap: () {
+                                    _controller.selectedExpense =
+                                        _controller.listExpenses[index].obs;
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        child: Card(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16)),
+                                            child: ExpenseScreen(
+                                              expense: _controller
+                                                  .selectedExpense.value,
+                                            )),
+                                      ),
+                                    );
+                                    // Get.toNamed(
+                                    //     PagesRoute.expenseSelectedRoute);
+                                  },
+                                );
+                              },
                             ),
-                            subtitle: Text(
-                              'R\$ ${_controller.expenses[index]['purchaseValue']}',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            onTap: () {
-                              _controller.selectedExpense =
-                                  _controller.listExpenses[index].obs;
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16)),
-                                  child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      child: ExpenseScreen(expense: _controller.selectedExpense.value,)),
-                                ),
-                              );
-                              // Get.toNamed(
-                              //     PagesRoute.expenseSelectedRoute);
-                            },
-                          );
-                        },
-                      ),
-                    ),
+                          )
+                        : Column(
+                            children: const [
+                              Expanded(
+                                  child: Text('Não há despesas cadastradas'))
+                            ],
+                          ),
                   ),
                   SizedBox(
                     child: Text(
@@ -119,10 +129,11 @@ class ExpensesTab extends StatelessWidget {
                                       hint: const Text('Cartão utilizado'),
                                       alignment: Alignment.center,
                                       isExpanded: true,
-                                      items: _controller.creditCardList
-                                          .map<DropdownMenuItem<CreditCardModel>>(
-                                              (value) {
-                                        return DropdownMenuItem<CreditCardModel>(
+                                      items: _controller.creditCardList.map<
+                                          DropdownMenuItem<
+                                              CreditCardModel>>((value) {
+                                        return DropdownMenuItem<
+                                            CreditCardModel>(
                                           value: value,
                                           child: Text(value.nameCreditCard!),
                                         );
@@ -131,19 +142,16 @@ class ExpensesTab extends StatelessWidget {
                                         _controller.creditSelected = value!;
                                       }),
                                 ),
-                               const  CustomTextField(
-                                    padding:
-                                         EdgeInsets.symmetric(vertical: 8),
+                                const CustomTextField(
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Empresa',
                                     icon: Icons.business_sharp),
                                 const CustomTextField(
-                                    padding:
-                                         EdgeInsets.symmetric(vertical: 8),
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Qtde de parcelas',
                                     icon: Icons.numbers),
-                               const  CustomTextField(
-                                    padding:
-                                         EdgeInsets.symmetric(vertical: 8),
+                                const CustomTextField(
+                                    padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Valor',
                                     icon: Icons.numbers),
                                 ElevatedButton(
