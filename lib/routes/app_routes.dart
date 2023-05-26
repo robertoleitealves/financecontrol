@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import '../pages/auth/view/signin_screen.dart';
 import '../pages/auth/view/signup_screen.dart';
 import '../pages/base/base_screen.dart';
-import '../pages/creditcard/binding/credicard_binding.dart';
 import '../pages/creditcard/view/creditcard_tab.dart';
-import '../pages/expenses/binding/expenses_bindings.dart';
+
 import '../pages/expenses/view/expenses_tab.dart';
 
 abstract class AppPages {
@@ -13,12 +12,10 @@ abstract class AppPages {
     GetPage(
       name: PagesRoute.creditCardRoute,
       page: () => CreditCardTab(),
-      binding: CreditCardBinding(),
     ),
     GetPage(
       name: PagesRoute.expensesRoute,
       page: () => ExpensesTab(),
-      binding: ExpensesBinding(),
     ),
     GetPage(
       name: PagesRoute.signInRoute,
@@ -44,6 +41,5 @@ abstract class PagesRoute {
   static String creditCardSelectedRoute = '/creditCardSelected';
   static String signInRoute = '/signin';
   static String signUpRoute = '/signup';
-  static String splashRoute = '/splash';
   static String baseRoute = '/';
 }

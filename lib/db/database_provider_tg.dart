@@ -73,22 +73,11 @@ class DatabaseProvider {
   }
 
   // WHEN DB UPGRADE
-  _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // TODO: FAZER UPGRADE DO BANCO DE DADOS
-  }
+  _onUpgrade(Database db, int oldVersion, int newVersion) async {}
 
   // CREATING TABLES
   _onCreate(Database db, int version) async {
     //const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL';
-
-    // AUTH USER TABLE
-    await db.execute('''
-          CREATE TABLE $authUserTable (
-            $authIdColumn INTEGER PRIMARY KEY,
-            $authTokenUserIdColumn INTEGER,
-            $authTokenColumn TEXT
-          )
-          ''');
 
     // USER TABLE
     await db.execute('''
@@ -125,7 +114,7 @@ class DatabaseProvider {
               $creditCardNameColumn TEXT,
               $creditCardValidateDateColumn TEXT,
               $creditCardAvaliableLimitColumn REAL,
-              $creditCardLimitValueColumn TEXT
+              $creditCardLimitValueColumn REAL
              
             )
             ''');
@@ -167,17 +156,6 @@ class DatabaseProvider {
     return result;
   }
 
-  // // AUTH
-  // Future<int> saveTokenDb(TokenModel tokenModel) async {
-  //   await deleteData(table: authUserTable);
-  //   return await insertData(authUserTable, tokenModel.toMapDb());
-  // }
-
-  // Future<TokenModel> getTokenDb() async {
-  //   List result = await readData(table: authUserTable);
-  //   return TokenModel.fromMapDb(result.first);
-  // }
-
   // CREDIT CARDS
   Future<int> insertCreditCardsDb(List<CreditCardModel> values) async {
     Database myDb = await db;
@@ -194,21 +172,25 @@ class DatabaseProvider {
   Future<List<CreditCardModel>> getCreditCardListDb() async {
     final result = await readData(table: creditCardTable);
     List<CreditCardModel> creditCardList = result
-        .map<CreditCardModel>(
-            (producers) => CreditCardModel.fromMapDB(producers))
+        .map<CreditCardModel>((credit) => CreditCardModel.fromMapDB(credit))
         .toList();
     return creditCardList;
   }
 
-  Future<CreditCardModel?> getCreditCardByIdDb(int creditCardId) async {
+  Future<List<CreditCardModel>> getCreditCardByIdUserDb(int userId) async {
     List result = await readData(
         table: creditCardTable,
-        where: '$creditCardIdColumn = ?',
-        whereargs: [creditCardId]);
+        where: '$creditCardUserIdColumn = ?',
+        whereargs: [userId]);
     if (result.isNotEmpty) {
-      return CreditCardModel.fromMapDB(result.first);
+      List<CreditCardModel> creditList = result
+          .map<CreditCardModel>(
+              (creditCard) => CreditCardModel.fromMapDB(creditCard))
+          .toList();
+      return creditList;
+    } else {
+      return <CreditCardModel>[];
     }
-    return null;
   }
 
   Future<int> saveCreditCardDB(CreditCardModel creditCard) async {
@@ -251,15 +233,35 @@ class DatabaseProvider {
     return expensesList;
   }
 
-  Future<ExpensesModel?> getExpenseByIdExpense(int expenseId) async {
+  Future<List<ExpensesModel>> getExpensesByIdUserDb(int userId) async {
     List result = await readData(
         table: expensesTable,
-        where: '$expenseIdColumn = ?',
-        whereargs: [expenseId]);
+        where: '$expenseUserIdColumn = ?',
+        whereargs: [userId]);
     if (result.isNotEmpty) {
-      return ExpensesModel.fromMapDB(result.first);
+      List<ExpensesModel> expenseList = result
+          .map<ExpensesModel>((expense) => ExpensesModel.fromMapDB(expense))
+          .toList();
+      return expenseList;
+    } else {
+      return <ExpensesModel>[];
     }
-    return null;
+  }
+
+  Future<List<ExpensesModel>> getExpensesByIdCreditCardDb(
+      int creditCardId) async {
+    List result = await readData(
+        table: expensesTable,
+        where: '$expenseCreditCardIdColumn = ?',
+        whereargs: [creditCardId]);
+    if (result.isNotEmpty) {
+      List<ExpensesModel> expenseList = result
+          .map<ExpensesModel>((expense) => ExpensesModel.fromMapDB(expense))
+          .toList();
+      return expenseList;
+    } else {
+      return <ExpensesModel>[];
+    }
   }
 
   Future<int> saveExpenseDB(ExpensesModel expense) async {

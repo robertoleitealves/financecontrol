@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 class Validators {
+
   static String? passwordValidator(String? password) {
     if (password == null || password.isEmpty) {
       return 'Digite sua senha';
@@ -40,6 +41,26 @@ class Validators {
 
     return null;
   }
+
+  static String? cnpjValidator(String? cnpj) {
+    if (cnpj == null || cnpj.isEmpty) {
+      return 'Digite um Cnpj!';
+    }
+    if (!cnpj.isCnpj) return 'Digite um CNPJ válido!';
+
+    return null;
+  }
+
+  static String? creaValidator(String? crea) {
+    if (crea == null || crea.isEmpty) {
+      return 'CREA obrigatório';
+    }
+    if (crea.length < 3) return 'Digite um crea válido!';
+
+    return null;
+  }
+
+  
 
   static String? dateValidator(String? dateStr) {
     if (dateStr != null && dateStr.isNotEmpty) {

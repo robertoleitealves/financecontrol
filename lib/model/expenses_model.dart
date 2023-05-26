@@ -55,6 +55,6 @@ class ExpensesModel {
     purchaseValue = map[expensePurchaseValueColumn];
   }
 
-  // TODO: implement props
+
   List<Object?> get props => [idExpense];
 }

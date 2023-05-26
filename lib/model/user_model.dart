@@ -17,6 +17,7 @@ class UserModel {
       this.password});
 
   UserModel.fromMapDB(Map<String, dynamic> json) {
+    idUser = json[userIdColumn];
     name = json[userNameColumn];
     cpfNumber = json[userCpfColumn];
     birthdate = json[userBirthdateColumn];

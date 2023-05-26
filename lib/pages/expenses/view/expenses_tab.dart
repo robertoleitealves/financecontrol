@@ -35,28 +35,28 @@ class ExpensesTab extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(children: [
                   Expanded(
-                    child: _controller.expenses != null
+                    child: _controller.expenseList.isNotEmpty
                         ? GetBuilder<ExpensesController>(
                             builder: (controller) => ListView.builder(
                               controller: _controller.expenseController,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              itemCount: _controller.expenses.length,
+                              itemCount: _controller.expenseList.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
                                   title: Text(
-                                    _controller.listExpenses[index].market!,
+                                    _controller.expenseList[index].market!,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
                                   subtitle: Text(
-                                    'R\$ ${_controller.expenses[index]['purchaseValue']}',
+                                    'R\$ ${_controller.expenseList[index].purchaseValue}',
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                   onTap: () {
                                     _controller.selectedExpense =
-                                        _controller.listExpenses[index].obs;
+                                        _controller.expenseList[index].obs;
                                     showDialog(
                                       context: context,
                                       builder: (context) => Dialog(
@@ -83,7 +83,10 @@ class ExpensesTab extends StatelessWidget {
                         : Column(
                             children: const [
                               Expanded(
-                                  child: Text('Não há despesas cadastradas'))
+                                  child: Text('Não há despesas cadastradas',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold)))
                             ],
                           ),
                   ),
@@ -108,80 +111,100 @@ class ExpensesTab extends StatelessWidget {
                     context: context,
                     builder: ((context) {
                       return StatefulBuilder(builder: (context, setState) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                          title: const Text(
-                            'Nova despesa',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          content: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: DropdownButton<CreditCardModel>(
-                                      borderRadius: BorderRadius.circular(16),
-                                      hint: const Text('Cartão utilizado'),
-                                      alignment: Alignment.center,
-                                      isExpanded: true,
-                                      items: _controller.creditCardList.map<
-                                          DropdownMenuItem<
-                                              CreditCardModel>>((value) {
-                                        return DropdownMenuItem<
-                                            CreditCardModel>(
-                                          value: value,
-                                          child: Text(value.nameCreditCard!),
-                                        );
-                                      }).toList(),
-                                      onChanged: (CreditCardModel? value) {
-                                        _controller.creditSelected = value!;
-                                      }),
-                                ),
-                                const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    label: 'Empresa',
-                                    icon: Icons.business_sharp),
-                                const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    label: 'Qtde de parcelas',
-                                    icon: Icons.numbers),
-                                const CustomTextField(
-                                    padding: EdgeInsets.symmetric(vertical: 8),
-                                    label: 'Valor',
-                                    icon: Icons.numbers),
-                                ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16)),
-                                        backgroundColor:
-                                            CustomColors.customSwatchColor),
-                                    child: const Text(
-                                      'Cadastrar',
-                                    )),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextButton(
-                                    child: Text(
-                                      'Retornar',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              CustomColors.customContrastColor),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
+                        return SingleChildScrollView(
+                          child: AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            title: const Text(
+                              'Nova despesa',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            content: Form(
+                              key: _controller.expenseFormKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GetBuilder<ExpensesController>(
+                                        builder: (controller) {
+                                      return DropdownButton<CreditCardModel>(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          hint: const Text('Cartão utilizado'),
+                                          alignment: Alignment.center,
+                                          isExpanded: true,
+                                          items: _controller.creditCardList
+                                              .map((CreditCardModel credit) {
+                                            return DropdownMenuItem<
+                                                CreditCardModel>(
+                                              value: credit,
+                                              child:
+                                                  Text(credit.nameCreditCard!),
+                                            );
+                                          }).toList(),
+                                          value:
+                                              _controller.creditSelected?.value,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _controller.selectedCard(value!);
+                                            });
+                                          });
+                                    }),
                                   ),
-                                ),
-                              ],
+                                  CustomTextField(
+                                      controller: _controller.marketController,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      label: 'Empresa',
+                                      icon: Icons.business_sharp),
+                                  CustomTextField(
+                                      controller:
+                                          _controller.installmentsController,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      label: 'Qtde de parcelas',
+                                      icon: Icons.numbers),
+                                  CustomTextField(
+                                      controller:
+                                          _controller.purchaseController,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      label: 'Valor',
+                                      icon: Icons.numbers),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        _controller.saveExpense();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          backgroundColor:
+                                              CustomColors.customSwatchColor),
+                                      child: const Text(
+                                        'Cadastrar',
+                                      )),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TextButton(
+                                      child: Text(
+                                        'Retornar',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: CustomColors
+                                                .customContrastColor),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

@@ -8,30 +8,15 @@ import '../repository/data_repository.dart';
 class DataController extends GetxController {
   final DataRepository _repository = DataRepository();
 
-  UserModel _user = UserModel();
+  final UserModel _user = UserModel();
   String? _token;
   final bool _isLoading = true;
 
-  late List<CreditCardModel> _creditCardsList = [];
-  late List<ExpensesModel> _expenses = [];
-
+  
   UserModel get user => _user;
 
-  List<CreditCardModel> get creditCardList => _creditCardsList;
-  List<ExpensesModel> get expense => _expenses;
   String get token => _token!;
   bool get isLoading => _isLoading;
 
-  @override
-  onInit() {
-    super.onInit();
-    loadData();
-  }
 
-  Future<void> loadData() async {
-    _user = await _repository.getUserModelDB();
-    // _token = await _repository.getTokenDb();
-    _creditCardsList = await _repository.getCreditCardListDb();
-    _expenses = await _repository.getExpensesListDb();
-  }
 }

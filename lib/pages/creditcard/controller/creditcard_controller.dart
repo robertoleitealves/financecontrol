@@ -2,76 +2,64 @@ import 'dart:developer';
 
 import 'package:financecontrol/model/credit_card_model.dart';
 import 'package:financecontrol/pages/creditcard/repository/creditcard_repository.dart';
+import 'package:financecontrol/services/validators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../model/expenses_model.dart';
 import '../../../../model/user_model.dart';
-import '../../../../services/services/validators.dart';
 import '../../../../services/utils_services.dart';
-import '../../base/controller/data_controller.dart';
+import '../../auth/controller/auth_controller.dart';
 
 class CreditCardController extends GetxController {
+  final _authController = Get.find<AuthController>();
+
   final ScrollController creditController = ScrollController();
-  final _dataController = Get.find<DataController>();
   final _repository = CreditCardRepository();
   final RxList<ExpensesModel> _expenseList = <ExpensesModel>[].obs;
   final _utilsServices = UtilsServices();
-  UserModel? user;
+
   final searchFieldController = TextEditingController();
   RxList<CreditCardModel> creditList = <CreditCardModel>[].obs;
+  RxList<CreditCardModel> listCreditCard = <CreditCardModel>[].obs;
   final Rx<CreditCardModel> selectedCreditCard = CreditCardModel().obs;
   final RxBool isLoading = false.obs;
   final double sum = 0.00;
-  // ------------- CREATE USER ------------------- //
-  final TextEditingController cpfController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController birthdateController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  double newLimit = 0.00;
 
-  final userFormKey = GlobalKey<FormState>();
   final RxBool _isCpf = true.obs;
-
+  UserModel user = UserModel();
   // ------------- CREATE CREDITCARD ----------------------- //
 
-  final TextEditingController _nameCreditCardController =
+  final TextEditingController nameCreditCardController =
       TextEditingController();
-  final TextEditingController _limitValueController = TextEditingController();
-  final TextEditingController _validateDateController = TextEditingController();
-  final creditCardFormKey = GlobalKey<FormState>();
+  final TextEditingController limitValueController = TextEditingController();
+  final TextEditingController newLimitValueController = TextEditingController();
+  final TextEditingController validateDateController = TextEditingController();
+  CreditCardModel creditModel = CreditCardModel();
+  final creditFormKey = GlobalKey<FormState>();
 
-  List<CreditCardModel> get creditCardList => creditList;
-  CreditCardModel get selectedCard => selectedCreditCard.value;
   @override
   void onInit() {
     super.onInit();
+    getCreditCard();
   }
 
-  set setCreditCard(CreditCardModel creditCard) =>
-      selectedCreditCard.value = creditCard;
+  getCreditCard() async {
+    listCreditCard.value =
+        await _repository.getCreditCardByUserIdDb(_authController.user.idUser!);
+    creditList = listCreditCard;
+    update();
+  }
 
   bool get isCpf => _isCpf.value;
 
-  // CARREGAMENTO DOS DADOS DE FAZENDA/TALHÃO
-  Future<void> loadCreditCardListByUser(int userId) async {
-    creditList.clear();
-    if (_dataController.creditCardList != null) {
-      List<CreditCardModel> creditCardAux = _dataController.creditCardList
-          .where((creditCard) => creditCard.idUser == userId)
-          .toList();
-      for (var creditCard in creditCardAux) {
-        creditCard.expenses = _dataController.expense
-            .where((expense) => expense.idCreditCard == creditCard.idCreditCard)
-            .toList();
-
-        creditList.add(creditCard);
-      }
-    } else {
-      creditList = <CreditCardModel>[].obs;
-    }
+  updateCreditCard(CreditCardModel creditCard) async {
+    newLimit = double.parse(newLimitValueController.text);
+    creditCard.limitValueCard = newLimit;
+    final result = await _repository.updateCreditCardDb(creditCard);
+    update();
+    return result;
   }
 
   void onCreditCardSelect(CreditCardModel creditCard) {
@@ -118,35 +106,27 @@ class CreditCardController extends GetxController {
     return 'CPF obrigatório';
   }
 
-  void saveUser({CreditCardModel? creditModel}) async {
-    if (userFormKey.currentState!.validate()) {
-      if (creditModel != null) {
-        creditModel.idUser = user?.idUser;
-        creditModel.nameCreditCard = _nameCreditCardController.text.trim();
-        creditModel.limitValueCard = double.parse(_limitValueController.text);
-        creditModel.validateDate = _validateDateController.text;
-        creditModel.user = await _repository.getUserModelDB();
-
-        await _repository.updateCreditCardDb(creditModel);
-        await _dataController.loadData();
-        creditList.assignAll(_dataController.creditCardList);
-        Get.back();
-        clearCreditCardControllers();
-      } else {
-        CreditCardModel creditCard = CreditCardModel();
-
-        creditCard.validateDate = _validateDateController.text;
-        creditCard.nameCreditCard = _nameCreditCardController.text;
-        creditCard.limitValueCard = double.parse(_limitValueController.text);
-
-        creditCard.idCreditCard =
-            await _repository.saveNewCreditCardDB(creditCard);
-        _dataController.creditCardList.add(creditCard);
-        creditList.assignAll(_dataController.creditCardList);
-        Get.back();
-        clearCreditCardControllers();
-        // openCreditCardDetails(_creditCardList.last);
-      }
+  void saveCredit() async {
+    if (creditFormKey.currentState!.validate()) {
+      creditModel.nameCreditCard = nameCreditCardController.text.trim();
+      creditModel.limitValueCard = double.parse(limitValueController.text);
+      creditModel.avaliableLimitCard = double.parse(limitValueController.text);
+      creditModel.validateDate = validateDateController.text;
+      user = await _repository.getUserModelDB();
+      creditModel.user = user;
+      creditModel.idUser = user.idUser;
+      creditModel.idCreditCard =
+          await _repository.saveNewCreditCardDB(creditModel);
+      print(creditModel);
+      creditList.add(creditModel);
+      update();
+      // creditList.assignAll(_dataController.creditCardList);
+      Get.back();
+      clearCreditCardControllers();
+      _utilsServices.showToast(
+        message: "Cartão cadastrado com sucesso",
+        isError: false,
+      );
     } else {
       _utilsServices.showToast(
         message: "Todos os dados devem ser preenchidos",
@@ -160,17 +140,16 @@ class CreditCardController extends GetxController {
       await _repository.deleteCreditCardDb(creditCardId);
       creditList.removeWhere((credit) => credit.idCreditCard == creditCardId);
       _utilsServices.showToast(message: 'Cartão excluído com sucesso!');
-      Get.back();
-      Get.back();
     } on Exception catch (e, s) {
       log('Erro ao deletar',
           name: 'deleteCreditCardDb', error: e, stackTrace: s);
     }
+    update();
   }
 
   void clearCreditCardControllers() {
-    _nameCreditCardController.clear();
-    _limitValueController.clear();
-    _validateDateController.clear();
+    nameCreditCardController.clear();
+    limitValueController.clear();
+    validateDateController.clear();
   }
 }

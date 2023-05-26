@@ -9,11 +9,6 @@ import '../../../model/user_model.dart';
 class DataRepository {
   final DatabaseProvider _helper = DatabaseProvider();
 
-  // Future<String> getTokenDb() async {
-  //   TokenModel token = await _helper.getTokenDb();
-  //   return token.token!;
-  // }
-
   Future<UserModel> getUserModelDB() async {
     return await _helper.getUserDb();
   }

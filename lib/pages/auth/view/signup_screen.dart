@@ -5,6 +5,9 @@ import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../services/mask_formatters.dart';
+import '../../../services/validators.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -31,25 +34,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 label: 'Nome',
                 icon: Icons.person,
                 controller: _controller.nameSignUpController,
+                validator: Validators.nameValidator,
                 padding: const EdgeInsets.symmetric(vertical: 8),
+                // onChanged: (p0) => Validators.nameValidator(p0),
               ),
               CustomTextField(
                 label: 'Data de nascimento',
                 icon: Icons.date_range,
                 controller: _controller.birthdateController,
+                inputFormatters: [MaskFormatter.dateMask],
                 padding: const EdgeInsets.symmetric(vertical: 8),
+                validator: Validators.dateValidator,
               ),
               CustomTextField(
                 label: 'Telefone',
                 icon: Icons.phone,
                 controller: _controller.phoneNumberController,
+                inputFormatters: [MaskFormatter.phoneMask],
+                validator: Validators.phoneValidator,
                 padding: const EdgeInsets.symmetric(vertical: 8),
               ),
               CustomTextField(
                 label: 'CPF',
                 icon: Icons.numbers,
                 controller: _controller.cpfSignUpController,
+                inputFormatters: [MaskFormatter.cpfMask],
                 padding: const EdgeInsets.symmetric(vertical: 8),
+                validator: Validators.cpfValidator,
               ),
               CustomTextField(
                 label: 'Digite uma senha',

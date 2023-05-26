@@ -30,13 +30,14 @@ class CreditCardTab extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: Column(children: [
                   Expanded(
-                    child: _controller.creditList != null
+                    child: _controller.creditList.isNotEmpty
                         ? GetBuilder<CreditCardController>(
                             builder: (controller) => ListView.builder(
                                 controller: _controller.creditController,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemCount: _controller.creditList.length,
+                                
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                       title: Text(
@@ -50,6 +51,7 @@ class CreditCardTab extends StatelessWidget {
                                         'R\$ ${_controller.creditList[index].avaliableLimitCard}',
                                         style: const TextStyle(fontSize: 16),
                                       ),
+                                      
                                       onTap: () {
                                         _controller.onCreditCardSelect(
                                             _controller.creditList[index]);
@@ -69,11 +71,15 @@ class CreditCardTab extends StatelessWidget {
                                           ),
                                         );
                                       });
-                                }))
+                                }),)
                         : Column(
                             children: const [
-                               Expanded(
-                                  child: Text('Não há cartões cadastrados')),
+                              Expanded(
+                                  child: Text(
+                                'Não há cartões cadastrados',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              )),
                             ],
                           ),
                   ),
@@ -106,12 +112,14 @@ class CreditCardTab extends StatelessWidget {
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           content: Form(
-                            key: _formKey,
+                            key: _controller.creditFormKey,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 CustomTextField(
+                                  controller:
+                                      _controller.nameCreditCardController,
                                   icon: Icons.credit_card,
                                   label: 'Nome do cartão: ',
                                   padding:
@@ -119,18 +127,24 @@ class CreditCardTab extends StatelessWidget {
                                   onChanged: (nameCreditCard) =>
                                       print(nameCreditCard),
                                 ),
-                                const CustomTextField(
+                                CustomTextField(
+                                    controller:
+                                        _controller.validateDateController,
                                     keyboardType: TextInputType.number,
                                     padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Data de validade',
                                     icon: Icons.numbers),
-                                const CustomTextField(
+                                CustomTextField(
+                                    controller:
+                                        _controller.limitValueController,
                                     keyboardType: TextInputType.number,
                                     padding: EdgeInsets.symmetric(vertical: 8),
                                     label: 'Limite total: ',
                                     icon: Icons.numbers),
                                 ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _controller.saveCredit();
+                                    },
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                             borderRadius:

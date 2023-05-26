@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 class CustomTextField extends StatefulWidget {
   final String label;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
@@ -24,6 +25,7 @@ class CustomTextField extends StatefulWidget {
     required this.label,
     this.controller,
     this.focusNode,
+    this.validator,
     this.keyboardType = TextInputType.multiline,
     this.textInputAction,
     this.style,
@@ -57,7 +59,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.padding,
-      child: TextField(
+      child: TextFormField(
         keyboardType: widget.keyboardType,
         controller: widget.controller,
         decoration: InputDecoration(
@@ -71,6 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
         ),
         onChanged: widget.onChanged,
+        validator: widget.validator,
       ),
     );
   }
