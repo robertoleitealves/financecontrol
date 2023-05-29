@@ -5,9 +5,16 @@ import 'package:get/get.dart';
 
 import '../controller/expenses_controller.dart';
 
-class ExpenseScreen extends StatelessWidget {
-  ExpenseScreen({super.key, required ExpensesModel expense});
+class ExpenseScreen extends StatefulWidget {
+  const ExpenseScreen({super.key, required ExpensesModel expense});
+
+  @override
+  State<ExpenseScreen> createState() => _ExpenseScreenState();
+}
+
+class _ExpenseScreenState extends State<ExpenseScreen> {
   final _controller = Get.find<ExpensesController>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,25 +75,36 @@ class ExpenseScreen extends StatelessWidget {
               ),
               style: const TextStyle(fontSize: 16),
             ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  const TextSpan(
-                    text: 'Valor: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                      text: _controller.selectedExpense.value.purchaseValue
-                          .toString())
-                ],
+            Obx(
+              () => Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: 'Valor da parcela: ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                        text: _controller.selectedExpense.value.purchaseValue
+                            .toString())
+                  ],
+                ),
+                style: const TextStyle(fontSize: 16),
               ),
-              style: const TextStyle(fontSize: 16),
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: _controller.selectedExpense.value.installments! <= 1
                   ? ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _controller.deleteExpenseDb(
+                              _controller.selectedExpense.value.idExpense!);
+                        });
+
+                        // _controller.sumExpenses.value = _controller
+                        //         .sumExpenses.value -
+                        //     _controller.selectedExpense.value.purchaseValue!;
+                      },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16)),
@@ -98,7 +116,12 @@ class ExpenseScreen extends StatelessWidget {
                       ),
                     )
                   : ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _controller
+                              .slaughterplot(_controller.selectedExpense.value);
+                        });
+                      },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16)),

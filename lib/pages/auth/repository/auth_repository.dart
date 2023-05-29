@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:financecontrol/pages/base/controller/data_controller.dart';
+import 'package:financecontrol/pages/auth/controller/auth_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../db/database_provider_tg.dart';
@@ -11,27 +11,7 @@ class AuthRepository {
   final DatabaseProvider _helper = DatabaseProvider();
   // final HttpManager _httpManager = HttpManager();
 
-  // TRATATIVA DE RESPONSE USER
-  // AuthResult handleUserOrError(dynamic result) {
-  //   if (result is Map<String, dynamic>) {
-  //     if (result['token'] != null) {
-  //       final user = AuthResponseModel.fromJson(result);
-  //       return AuthResult.success(user);
-  //     }
 
-  //     final user = UserModel.fromJson(result);
-  //     return AuthResult.success(user);
-  //   } else if (result is int) {
-  //     return AuthResult.error(result.toString());
-  //   } else if (result.isEmpty) {
-  //     return AuthResult.success(result);
-  //   } else {
-  //     debugPrint(result);
-  //     return AuthResult.error(result);
-  //   }
-  // }
-
-  // TRATATIVA DE RESPONSE
 
   // LOGAR
   Future<AuthResult> signin(
@@ -56,7 +36,7 @@ class AuthRepository {
       auxUser['userPassword'] = encodedPassword;
       final id = await _helper.saveUserDb(user);
       user.idUser = id;
-      Get.put(DataController());
+      Get.put(() => AuthController());
       return AuthResult.success(Response);
     } catch (e) {
       return AuthResult.error(e.toString());

@@ -5,7 +5,7 @@ import '../../../db/database_provider_tg.dart';
 import '../../../model/user_model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../services/utils_services.dart';
-import '../../base/controller/data_controller.dart';
+
 import '../../base/controller/navigation_controller.dart';
 import '../../creditcard/controller/creditcard_controller.dart';
 import '../../expenses/controller/expenses_controller.dart';
@@ -55,7 +55,7 @@ class AuthController extends GetxController {
     Get.lazyPut(() => ExpensesController());
     Get.lazyPut(() => CreditCardController());
     Get.lazyPut(() => NavigationController());
-    Get.lazyPut(() => DataController());
+    
   }
 
   // RESETAR SENHA

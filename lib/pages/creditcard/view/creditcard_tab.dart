@@ -3,13 +3,15 @@ import 'package:financecontrol/components/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../components/customcolors.dart';
+import '../../expenses/controller/expenses_controller.dart';
 import '../controller/creditcard_controller.dart';
 import 'creditcard_screen.dart';
 
 class CreditCardTab extends StatelessWidget {
   CreditCardTab({super.key});
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final _controller = Get.find<CreditCardController>();
+  final expenseController = Get.find<ExpensesController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +39,6 @@ class CreditCardTab extends StatelessWidget {
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemCount: _controller.creditList.length,
-                                
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                       title: Text(
@@ -51,7 +52,6 @@ class CreditCardTab extends StatelessWidget {
                                         'R\$ ${_controller.creditList[index].avaliableLimitCard}',
                                         style: const TextStyle(fontSize: 16),
                                       ),
-                                      
                                       onTap: () {
                                         _controller.onCreditCardSelect(
                                             _controller.creditList[index]);
@@ -71,9 +71,10 @@ class CreditCardTab extends StatelessWidget {
                                           ),
                                         );
                                       });
-                                }),)
-                        : Column(
-                            children: const [
+                                }),
+                          )
+                        : const Column(
+                            children: [
                               Expanded(
                                   child: Text(
                                 'Não há cartões cadastrados',
@@ -85,12 +86,14 @@ class CreditCardTab extends StatelessWidget {
                   ),
                 ]),
               ),
-              Text(
-                'Total das faturas: ${_controller.sum}',
-                textAlign: TextAlign.center,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              // Obx(
+              //   () => Text(
+              //     'Total de limite disponível: ${_controller.sum.value}',
+              //     textAlign: TextAlign.center,
+              //     style: const TextStyle(
+              //         fontSize: 16, fontWeight: FontWeight.bold),
+              //   ),
+              // ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: CustomColors.customSwatchColor,
@@ -124,26 +127,27 @@ class CreditCardTab extends StatelessWidget {
                                   label: 'Nome do cartão: ',
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8),
-                                  onChanged: (nameCreditCard) =>
-                                      print(nameCreditCard),
                                 ),
                                 CustomTextField(
                                     controller:
                                         _controller.validateDateController,
                                     keyboardType: TextInputType.number,
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
                                     label: 'Data de validade',
                                     icon: Icons.numbers),
                                 CustomTextField(
                                     controller:
                                         _controller.limitValueController,
                                     keyboardType: TextInputType.number,
-                                    padding: EdgeInsets.symmetric(vertical: 8),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
                                     label: 'Limite total: ',
                                     icon: Icons.numbers),
                                 ElevatedButton(
                                     onPressed: () {
                                       _controller.saveCredit();
+                                      _controller.getCreditCard();
                                     },
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(

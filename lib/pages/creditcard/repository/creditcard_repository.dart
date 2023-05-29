@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:financecontrol/model/expenses_model.dart';
 import 'package:get/get.dart';
 
 import '../../../db/database_provider_tg.dart';
@@ -34,6 +35,11 @@ class CreditCardRepository {
     return await _helper.getCreditCardListDb();
   }
 
+  Future<CreditCardModel> getCreditCardByCreditId(creditCardId) async {
+    final result = await _helper.getCreditCardByIdCreditCardDb(creditCardId);
+    return result;
+  }
+
   Future saveCreditCardByUser({
     required int userId,
     required CreditCardModel creditCard,
@@ -42,7 +48,6 @@ class CreditCardRepository {
     await _helper.saveCreditCardDB(creditCard);
   }
 
-  // CREDITCARD
   Future<int> saveNewCreditCardDB(CreditCardModel creditCard) async {
     return await _helper.saveCreditCardDB(creditCard);
   }
@@ -54,5 +59,20 @@ class CreditCardRepository {
   Future<int> deleteCreditCardDb(int creditId) async {
     await _helper.deleteAllExpensesByCreditCardDb(creditId);
     return await _helper.deleteCreditCardDb(creditId);
+  }
+
+  Future<List<ExpensesModel>> getExpensesByCreditCardId(
+      int idCreditCard) async {
+    try {
+      final result = await _helper.getExpensesByIdCreditCardDb(idCreditCard);
+      if (result.isNotEmpty) {
+        return result;
+      } else {
+        return <ExpensesModel>[];
+      }
+    } catch (e, s) {
+      log("Erro", error: e, stackTrace: s);
+      return [];
+    }
   }
 }

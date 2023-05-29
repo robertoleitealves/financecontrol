@@ -39,15 +39,29 @@ class ExpensesRepository {
     }
   }
 
-  // CREDITCARD
-
-  Future<int> updateCreditCardDb(CreditCardModel creditCard) async {
-    return await _helper.updateCreditCardDb(creditCard);
+  Future<CreditCardModel> getCreditCardByCreditCardId(int creditCardId) async {
+    try {
+      final result = await _helper.getCreditCardByIdCreditCardDb(creditCardId);
+      return result;
+    } catch (e, s) {
+      log("Erro", error: e, stackTrace: s);
+      return CreditCardModel();
+    }
   }
 
-  Future<int> deleteCreditCardDb(int creditCardId) async {
-    await _helper.deleteAllExpensesByCreditCardDb(creditCardId);
-    return await _helper.deleteCreditCardDb(creditCardId);
+  Future<List<ExpensesModel>> getExpensesByCreditCardIdDb(
+      int creditCardId) async {
+    try {
+      final result = await _helper.getExpensesByIdCreditCardDb(creditCardId);
+      if (result.isNotEmpty) {
+        return result;
+      } else {
+        return <ExpensesModel>[];
+      }
+    } catch (e, s) {
+      log("Erro", error: e, stackTrace: s);
+      return [];
+    }
   }
 
   // EXPENSES
@@ -77,5 +91,9 @@ class ExpensesRepository {
 
   Future<int> deleteExpenseDb(int expenseId) async {
     return await _helper.deleteExpensesDb(expenseId);
+  }
+
+  Future<int> updateCreditCardDb(CreditCardModel creditCard) async {
+    return await _helper.updateCreditCardDb(creditCard);
   }
 }

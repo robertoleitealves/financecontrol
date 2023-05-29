@@ -28,6 +28,7 @@ const String creditCardTable = "creditCard";
 const String creditCardIdColumn = "creditCardId";
 const String creditCardUserIdColumn = "userId";
 const String creditCardNameColumn = "creditCardName";
+const String creditCardQtExpensesColumn = "qtExpenses";
 const String creditCardValidateDateColumn = "validateDate";
 const String creditCardAvaliableLimitColumn = "avaliableLimit";
 const String creditCardLimitValueColumn = "limitValue";

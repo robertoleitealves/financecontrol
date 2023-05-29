@@ -110,6 +110,7 @@ class DatabaseProvider {
     await db.execute('''
             CREATE TABLE $creditCardTable (
               $creditCardIdColumn INTEGER PRIMARY KEY,
+              $creditCardQtExpensesColumn INTEGER,
               $creditCardUserIdColumn INTEGER,
               $creditCardNameColumn TEXT,
               $creditCardValidateDateColumn TEXT,
@@ -138,6 +139,14 @@ class DatabaseProvider {
   Future<UserModel> getUserDb() async {
     final result = await readData(table: userTable);
     UserModel response = UserModel.fromMapDB(result.first);
+
+    return response;
+  }
+
+  Future<CreditCardModel> getCreditCardByIdCreditCardDb(
+      int creditCardId) async {
+    final result = await readData(table: creditCardTable);
+    CreditCardModel response = CreditCardModel.fromMapDB(result.first);
 
     return response;
   }

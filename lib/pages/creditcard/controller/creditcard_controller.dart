@@ -2,32 +2,30 @@ import 'dart:developer';
 
 import 'package:financecontrol/model/credit_card_model.dart';
 import 'package:financecontrol/pages/creditcard/repository/creditcard_repository.dart';
-import 'package:financecontrol/services/validators.dart';
+// import 'package:financecontrol/services/validators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../model/expenses_model.dart';
 import '../../../../model/user_model.dart';
 import '../../../../services/utils_services.dart';
-import '../../auth/controller/auth_controller.dart';
 
 class CreditCardController extends GetxController {
-  final _authController = Get.find<AuthController>();
-
   final ScrollController creditController = ScrollController();
   final _repository = CreditCardRepository();
-  final RxList<ExpensesModel> _expenseList = <ExpensesModel>[].obs;
+
   final _utilsServices = UtilsServices();
 
   final searchFieldController = TextEditingController();
   RxList<CreditCardModel> creditList = <CreditCardModel>[].obs;
   RxList<CreditCardModel> listCreditCard = <CreditCardModel>[].obs;
+  RxList<ExpensesModel>? listExpenses;
   final Rx<CreditCardModel> selectedCreditCard = CreditCardModel().obs;
   final RxBool isLoading = false.obs;
-  final double sum = 0.00;
+  RxDouble sum = 0.00.obs;
   double newLimit = 0.00;
+  RxInt qtExpenses = 0.obs;
 
-  final RxBool _isCpf = true.obs;
   UserModel user = UserModel();
   // ------------- CREATE CREDITCARD ----------------------- //
 
@@ -46,68 +44,53 @@ class CreditCardController extends GetxController {
   }
 
   getCreditCard() async {
+    isLoading.value = true;
+    sum = 0.00.obs;
+    user = await _repository.getUserModelDB();
     listCreditCard.value =
-        await _repository.getCreditCardByUserIdDb(_authController.user.idUser!);
+        await _repository.getCreditCardByUserIdDb(user.idUser!);
     creditList = listCreditCard;
+    for (CreditCardModel credit in creditList) {
+      sum.value = sum.value + credit.avaliableLimitCard!;
+      listExpenses?.value =
+          await _repository.getExpensesByCreditCardId(credit.idCreditCard!);
+      credit.expenses = listExpenses;
+      if (listExpenses != null) {
+        qtExpenses = listExpenses!.length.obs;
+        if (qtExpenses < 0) {
+          qtExpenses = 0.obs;
+        }
+      } else {
+        qtExpenses = credit.qtExpenses!.obs;
+      }
+      
+    }
+
+    isLoading.value = false;
     update();
   }
-
-  bool get isCpf => _isCpf.value;
 
   updateCreditCard(CreditCardModel creditCard) async {
     newLimit = double.parse(newLimitValueController.text);
     creditCard.limitValueCard = newLimit;
+    creditCard.avaliableLimitCard = newLimit;
     final result = await _repository.updateCreditCardDb(creditCard);
+
+    await getCreditCard();
     update();
     return result;
   }
 
-  void onCreditCardSelect(CreditCardModel creditCard) {
+  void onCreditCardSelect(CreditCardModel creditCard) async {
     selectedCreditCard.value = creditCard;
-    selectedCreditCard.value.expenses ??= <ExpensesModel>[];
-    _expenseList.assignAll(selectedCreditCard.value.expenses!);
+    await _repository.getCreditCardByCreditId(creditCard.idCreditCard);
+
     update();
-  }
-
-  // void changeMask(String? numbers) {
-  //   if (numbers != null) {
-  //     String newText = numbers.replaceAll(RegExp(r'[^\d]'), "");
-  //     if (newText.length == 11) {
-  //       newText = newText.substring(0, 3) +
-  //           "." +
-  //           newText.substring(3, 6) +
-  //           "." +
-  //           newText.substring(6, 9) +
-  //           "-" +
-  //           newText.substring(9, 11);
-  //     } else if (newText.length == 14) {
-  //       newText = newText.substring(0, 2) +
-  //           "." +
-  //           newText.substring(2, 5) +
-  //           "." +
-  //           newText.substring(5, 8) +
-  //           "/" +
-  //           newText.substring(8, 12) +
-  //           "-" +
-  //           newText.substring(12, 14);
-  //     }
-  //     _cpfCnpjController.value = _cpfCnpjController.value.copyWith(
-  //       text: newText,
-  //       selection: TextSelection.collapsed(offset: newText.length),
-  //     );
-  //   }
-  // }
-
-  String? validatorCPF(String? value) {
-    if (value != null) {
-      _isCpf.value = true;
-      return Validators.cpfValidator(value);
-    }
-    return 'CPF obrigatório';
   }
 
   void saveCredit() async {
     if (creditFormKey.currentState!.validate()) {
+      isLoading.value = true;
       creditModel.nameCreditCard = nameCreditCardController.text.trim();
       creditModel.limitValueCard = double.parse(limitValueController.text);
       creditModel.avaliableLimitCard = double.parse(limitValueController.text);
@@ -115,12 +98,13 @@ class CreditCardController extends GetxController {
       user = await _repository.getUserModelDB();
       creditModel.user = user;
       creditModel.idUser = user.idUser;
+      creditModel.qtExpenses = 0;
       creditModel.idCreditCard =
           await _repository.saveNewCreditCardDB(creditModel);
-      print(creditModel);
-      creditList.add(creditModel);
+
+      isLoading.value = false;
       update();
-      // creditList.assignAll(_dataController.creditCardList);
+
       Get.back();
       clearCreditCardControllers();
       _utilsServices.showToast(
@@ -144,6 +128,7 @@ class CreditCardController extends GetxController {
       log('Erro ao deletar',
           name: 'deleteCreditCardDb', error: e, stackTrace: s);
     }
+    sum.value = sum.value - selectedCreditCard.value.avaliableLimitCard!;
     update();
   }
 

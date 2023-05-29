@@ -1,9 +1,9 @@
 import 'package:financecontrol/components/customcolors.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  const CustomAppBar({super.key, 
-    
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({
+    super.key,
     this.actions,
     this.leading,
     this.title,
@@ -21,7 +21,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       centerTitle: true,
       automaticallyImplyLeading: automaticallyImplyLeading,
       backgroundColor: CustomColors.customSwatchColor,
-      actions: const [],
+      actions: actions,
       titleTextStyle:
           const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
       title: title,
@@ -29,6 +29,5 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-
   Size get preferredSize => const Size.fromHeight(55);
 }

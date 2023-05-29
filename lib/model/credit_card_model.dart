@@ -13,6 +13,7 @@ import 'expenses_model.dart';
 class CreditCardModel {
   int? idCreditCard;
   int? idUser;
+  int? qtExpenses = 0;
   UserModel? user;
   String? nameCreditCard;
   String? validateDate;
@@ -22,6 +23,7 @@ class CreditCardModel {
   CreditCardModel({
     this.idCreditCard,
     this.idUser,
+    this.qtExpenses,
     this.user,
     this.nameCreditCard,
     this.validateDate,
@@ -32,7 +34,7 @@ class CreditCardModel {
 
   @override
   String toString() {
-    return 'CreditCardModel(idCreditCard: $idCreditCard, idUser: $idUser, nameCreditCard: $nameCreditCard, validateDate: $validateDate, limitValue: $limitValueCard, availableLimit: $avaliableLimitCard)';
+    return 'CreditCardModel(idCreditCard: $idCreditCard, idUser: $idUser, qtExpenses: $qtExpenses, user: $user, nameCreditCard: $nameCreditCard, validateDate: $validateDate, limitValueCard: $limitValueCard, avaliableLimitCard: $avaliableLimitCard, expenses: $expenses)';
   }
 
   Map<String, dynamic> toMapDB() {
@@ -40,6 +42,7 @@ class CreditCardModel {
       creditCardIdColumn: idCreditCard,
       creditCardNameColumn: nameCreditCard,
       creditCardUserIdColumn: idUser,
+      creditCardQtExpensesColumn: qtExpenses,
       creditCardValidateDateColumn: validateDate,
       creditCardLimitValueColumn: limitValueCard,
       creditCardAvaliableLimitColumn: avaliableLimitCard,
@@ -49,6 +52,7 @@ class CreditCardModel {
   CreditCardModel.fromMapDB(Map<String, dynamic> map) {
     idCreditCard = map[creditCardIdColumn];
     nameCreditCard = map[creditCardNameColumn];
+    qtExpenses = map[creditCardQtExpensesColumn];
     idUser = map[creditCardUserIdColumn];
     validateDate = map[creditCardValidateDateColumn];
     limitValueCard = map[creditCardLimitValueColumn];
@@ -58,7 +62,6 @@ class CreditCardModel {
   //     _$CreditCardFromJson(json);
 
   // Map<String, dynamic> toJson() => _$CreditCardToJson(this);
-
 
   List<Object?> get props => [idCreditCard];
 

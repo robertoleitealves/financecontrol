@@ -1,5 +1,4 @@
 import 'package:financecontrol/components/custom_text_field.dart';
-import 'package:financecontrol/pages/creditcard/view/creditcard_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../components/customcolors.dart';
@@ -8,13 +7,6 @@ import '../controller/creditcard_controller.dart';
 class CreditCardScreen extends StatelessWidget {
   CreditCardScreen({super.key});
   final _controller = Get.find<CreditCardController>();
-
-  // sumCredits() {
-  //   for (var i = 0; i == _controller.creditCardList.length; i++) {
-  //     _controller.sum += _controller.creditCardList[i].expenses.;
-  //   }
-  //   _controller.sum;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +35,7 @@ class CreditCardScreen extends StatelessWidget {
                   const TextSpan(
                       text: 'Quantidade de despesas: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(
-                      text: _controller
-                          .selectedCreditCard.value.expenses?.length
-                          .toString())
+                  TextSpan(text: _controller.qtExpenses.toString())
                 ],
               ),
               style: const TextStyle(fontSize: 16),
@@ -91,7 +80,7 @@ class CreditCardScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16)),
                           title: const Text(
-                            'Alteração de limite todal do cartão',
+                            'Alteração de limite total do cartão',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -127,7 +116,7 @@ class CreditCardScreen extends StatelessWidget {
                                       backgroundColor:
                                           CustomColors.customSwatchColor),
                                   child: const Text(
-                                    'Apagar',
+                                    'Atualizar',
                                   )),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
