@@ -21,7 +21,7 @@ class CreditCardScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                _controller.selectedCreditCard.value.nameCreditCard!,
+                _controller.selectedCreditCard.value.name!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -29,17 +29,17 @@ class CreditCardScreen extends StatelessWidget {
                     color: CustomColors.customSwatchColor),
               ),
             ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  const TextSpan(
-                      text: 'Quantidade de despesas: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: _controller.qtExpenses.toString())
-                ],
-              ),
-              style: const TextStyle(fontSize: 16),
-            ),
+            // Text.rich(
+            //   TextSpan(
+            //     children: [
+            //       const TextSpan(
+            //           text: 'Quantidade de despesas: ',
+            //           style: TextStyle(fontWeight: FontWeight.bold)),
+            //       TextSpan(text: _controller.qtExpenses.toString())
+            //     ],
+            //   ),
+            //   style: const TextStyle(fontSize: 16),
+            // ),
             Text.rich(
               TextSpan(
                 children: [
@@ -47,7 +47,7 @@ class CreditCardScreen extends StatelessWidget {
                       text: 'Limite total: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: _controller.selectedCreditCard.value.limitValueCard
+                      text: _controller.selectedCreditCard.value.limitValue
                           .toString()),
                 ],
               ),
@@ -61,8 +61,7 @@ class CreditCardScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                      text: _controller
-                          .selectedCreditCard.value.avaliableLimitCard
+                      text: _controller.selectedCreditCard.value.avaliableLimit
                           .toString())
                 ],
               ),
@@ -178,8 +177,8 @@ class CreditCardScreen extends StatelessWidget {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  _controller.deleteCreditCardDb(_controller
-                                      .selectedCreditCard.value.idCreditCard!);
+                                  _controller.deleteCreditCardDb(
+                                      _controller.selectedCreditCard.value.id!);
                                   Get.back();
                                   Get.back();
                                 },

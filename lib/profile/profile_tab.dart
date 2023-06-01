@@ -236,6 +236,20 @@ class ProfileTab extends StatelessWidget {
                   ),
                 )
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextButton(
+                  onPressed: () {
+                    _controller.signOut();
+                  },
+                  child: Text(
+                    'Sair',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.customContrastColor),
+                  )),
             )
           ],
         ),

@@ -7,7 +7,7 @@ import '../constants/db_constants.dart';
 
 // ignore: must_be_immutable
 class ExpensesModel {
-  int? idExpense;
+  int? id;
   String? market;
   String? createdAt;
   int? idCreditCard;
@@ -17,7 +17,7 @@ class ExpensesModel {
   int? installments; //QTDE PARCELAS
   double? purchaseValue; //VALOR DA COMPRA
   ExpensesModel({
-    this.idExpense,
+    this.id,
     this.market,
     this.createdAt,
     this.idCreditCard,
@@ -30,12 +30,12 @@ class ExpensesModel {
 
   @override
   String toString() {
-    return 'ExpensesModel(idExpense: $idExpense, market: $market, createdAt: $createdAt, idCreditCard: $idCreditCard, creditCard: $creditCard, idUser: $idUser, user: $user, installments: $installments, purchaseValue: $purchaseValue)';
+    return 'ExpensesModel(idExpense: $id, market: $market, createdAt: $createdAt, idCreditCard: $idCreditCard, creditCard: $creditCard, idUser: $idUser, user: $user, installments: $installments, purchaseValue: $purchaseValue)';
   }
 
   Map<String, dynamic> toMapDB() {
     return <String, dynamic>{
-      expenseIdColumn: idExpense,
+      expenseIdColumn: id,
       expenseCreatedAtColumn: createdAt,
       expenseMarketColumn: market,
       expenseCreditCardIdColumn: idCreditCard,
@@ -46,7 +46,7 @@ class ExpensesModel {
   }
 
   ExpensesModel.fromMapDB(Map<String, dynamic> map) {
-    idExpense = map[expenseIdColumn];
+    id = map[expenseIdColumn];
     market = map[expenseMarketColumn];
     createdAt = map[expenseCreatedAtColumn];
     idCreditCard = map[expenseCreditCardIdColumn];
@@ -55,6 +55,5 @@ class ExpensesModel {
     purchaseValue = map[expensePurchaseValueColumn];
   }
 
-
-  List<Object?> get props => [idExpense];
+  List<Object?> get props => [id];
 }

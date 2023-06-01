@@ -42,14 +42,13 @@ class CreditCardTab extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                       title: Text(
-                                        _controller
-                                            .creditList[index].nameCreditCard!,
+                                        _controller.creditList[index].name!,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       subtitle: Text(
-                                        'R\$ ${_controller.creditList[index].avaliableLimitCard}',
+                                        'R\$ ${_controller.creditList[index].avaliableLimit}',
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                       onTap: () {
@@ -146,8 +145,12 @@ class CreditCardTab extends StatelessWidget {
                                     icon: Icons.numbers),
                                 ElevatedButton(
                                     onPressed: () {
-                                      _controller.saveCredit();
-                                      _controller.getCreditCard();
+                                      setState(
+                                        () {
+                                          _controller.saveCredit();
+                                          _controller.getCreditCard();
+                                        },
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(

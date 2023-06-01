@@ -11,59 +11,59 @@ import 'expenses_model.dart';
 
 @JsonSerializable()
 class CreditCardModel {
-  int? idCreditCard;
+  int? id;
   int? idUser;
-  int? qtExpenses = 0;
+  int? quantityExpenses = 0;
   UserModel? user;
-  String? nameCreditCard;
+  String? name;
   String? validateDate;
-  double? limitValueCard; //LIMITE TOTAL
-  double? avaliableLimitCard; //LIMITE DISPONÍVEL
+  double? limitValue; //LIMITE TOTAL
+  double? avaliableLimit; //LIMITE DISPONÍVEL
   List<ExpensesModel>? expenses;
   CreditCardModel({
-    this.idCreditCard,
+    this.id,
     this.idUser,
-    this.qtExpenses,
+    this.quantityExpenses,
     this.user,
-    this.nameCreditCard,
+    this.name,
     this.validateDate,
-    this.limitValueCard,
-    this.avaliableLimitCard,
+    this.limitValue,
+    this.avaliableLimit,
     this.expenses,
   });
 
   @override
   String toString() {
-    return 'CreditCardModel(idCreditCard: $idCreditCard, idUser: $idUser, qtExpenses: $qtExpenses, user: $user, nameCreditCard: $nameCreditCard, validateDate: $validateDate, limitValueCard: $limitValueCard, avaliableLimitCard: $avaliableLimitCard, expenses: $expenses)';
+    return 'CreditCardModel(idCreditCard: $id, idUser: $idUser, qtExpenses: $quantityExpenses, user: $user, nameCreditCard: $name, validateDate: $validateDate, limitValueCard: $limitValue, avaliableLimitCard: $avaliableLimit, expenses: $expenses)';
   }
 
   Map<String, dynamic> toMapDB() {
     return <String, dynamic>{
-      creditCardIdColumn: idCreditCard,
-      creditCardNameColumn: nameCreditCard,
+      creditCardIdColumn: id,
+      creditCardNameColumn: name,
       creditCardUserIdColumn: idUser,
-      creditCardQtExpensesColumn: qtExpenses,
+      creditCardQtExpensesColumn: quantityExpenses,
       creditCardValidateDateColumn: validateDate,
-      creditCardLimitValueColumn: limitValueCard,
-      creditCardAvaliableLimitColumn: avaliableLimitCard,
+      creditCardLimitValueColumn: limitValue,
+      creditCardAvaliableLimitColumn: avaliableLimit,
     };
   }
 
   CreditCardModel.fromMapDB(Map<String, dynamic> map) {
-    idCreditCard = map[creditCardIdColumn];
-    nameCreditCard = map[creditCardNameColumn];
-    qtExpenses = map[creditCardQtExpensesColumn];
+    id = map[creditCardIdColumn];
+    name = map[creditCardNameColumn];
+    quantityExpenses = map[creditCardQtExpensesColumn];
     idUser = map[creditCardUserIdColumn];
     validateDate = map[creditCardValidateDateColumn];
-    limitValueCard = map[creditCardLimitValueColumn];
-    avaliableLimitCard = map[creditCardAvaliableLimitColumn];
+    limitValue = map[creditCardLimitValueColumn];
+    avaliableLimit = map[creditCardAvaliableLimitColumn];
   }
   //   factory CreditCardModel.fromJson(Map<String, dynamic> json) =>
   //     _$CreditCardFromJson(json);
 
   // Map<String, dynamic> toJson() => _$CreditCardToJson(this);
 
-  List<Object?> get props => [idCreditCard];
+  List<Object?> get props => [id];
 
   bool get stringify => true;
 }

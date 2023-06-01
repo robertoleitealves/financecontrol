@@ -21,7 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  const CustomAppBar(
+      appBar: const CustomAppBar(
         title: Text('Novo usuário'),
       ),
       body: Padding(
@@ -35,6 +35,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 icon: Icons.person,
                 controller: _controller.nameSignUpController,
                 validator: Validators.nameValidator,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                // onChanged: (p0) => Validators.nameValidator(p0),
+              ),
+              CustomTextField(
+                label: 'Username',
+                icon: Icons.person,
+                controller: _controller.usernameSignUpController,
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 // onChanged: (p0) => Validators.nameValidator(p0),
               ),

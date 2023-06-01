@@ -1,3 +1,4 @@
+import 'package:financecontrol/model/user_auth_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -84,6 +85,7 @@ class DatabaseProvider {
           CREATE TABLE $userTable (
             $userIdColumn INTEGER PRIMARY KEY,
             $userNameColumn TEXT,
+            $userUsernameColumn TEXT,
             $userCpfColumn TEXT,
             $userBirthdateColumn TEXT,
             $userPhoneColumn TEXT,
@@ -91,6 +93,14 @@ class DatabaseProvider {
  
           )
           ''');
+
+    //AUTHUSER TABLE
+    await db.execute('''
+CREATE TABLE $authUserTable (
+  $authIdColumn INTEGER PRIMARY KEY, 
+  $authUsernameColumn TEXT,
+  $authPasswordColumn
+)''');
 
     // EXPENSES TABLE
     await db.execute('''
@@ -133,6 +143,11 @@ class DatabaseProvider {
   // USER
   Future<int> saveUserDb(UserModel user) async {
     var id = await insertData(userTable, user.toMapDB());
+    return id;
+  }
+
+  Future<int> saveAuthDb(UserAuthModel authUser) async {
+    var id = await insertData(authUserTable, authUser.toMapDB());
     return id;
   }
 
@@ -209,7 +224,7 @@ class DatabaseProvider {
 
   Future<int> updateCreditCardDb(CreditCardModel creditCard) async {
     final result = await updateData(creditCardTable, creditCard.toMapDB(),
-        where: '$creditCardIdColumn = ?', args: [creditCard.idCreditCard!]);
+        where: '$creditCardIdColumn = ?', args: [creditCard.id!]);
     return result;
   }
 
@@ -280,16 +295,16 @@ class DatabaseProvider {
 
   Future<int> updateExpenseDb(ExpensesModel expense) async {
     final result = await updateData(expensesTable, expense.toMapDB(),
-        where: '$expenseIdColumn = ?', args: [expense.idExpense!]);
+        where: '$expenseIdColumn = ?', args: [expense.id!]);
     return result;
   }
 
   Future<int> deleteAllExpensesByCreditCardDb(int creditCardId) async {
     List<ExpensesModel> expenseList = await getExpensesListDb();
-    expenseList.removeWhere((expenses) => expenses.idExpense != creditCardId);
+    expenseList.removeWhere((expenses) => expenses.id != creditCardId);
     var qtde = 0;
     for (ExpensesModel expense in expenseList) {
-      await deleteExpensesDb(expense.idExpense!);
+      await deleteExpensesDb(expense.id!);
       qtde++;
     }
     return qtde;

@@ -23,10 +23,12 @@ class AuthController extends GetxController {
   String? passwordLogin;
   final TextEditingController passwordLoginController = TextEditingController();
   UserModel user = UserModel();
+  final formLoginKey = FormKey();
 
   // SIGNUP CONTROLLERS
   final passwordController = TextEditingController();
   final nameSignUpController = TextEditingController();
+  final usernameSignUpController = TextEditingController();
   final passwordSignUpController = TextEditingController();
   final passwordConfirmController = TextEditingController();
   final phoneNumberController = TextEditingController();
@@ -55,7 +57,6 @@ class AuthController extends GetxController {
     Get.lazyPut(() => ExpensesController());
     Get.lazyPut(() => CreditCardController());
     Get.lazyPut(() => NavigationController());
-    
   }
 
   // RESETAR SENHA
@@ -86,6 +87,7 @@ class AuthController extends GetxController {
   Future<void> signUp() async {
     isLoading.value = true;
     user.cpfNumber = cpfSignUpController.text;
+    user.username = usernameSignUpController.text;
     user.birthdate = birthdateController.text;
     user.name = nameSignUpController.text;
     user.password = passwordSignUpController.text;
@@ -121,6 +123,9 @@ class AuthController extends GetxController {
       success: (authResponse) async {
         try {
           user = UserModel.fromMapDB(authResponse);
+          nameLoginController.clear();
+          passwordLoginController.clear();
+
           await loadData();
           Get.toNamed(PagesRoute.baseRoute);
         } catch (err) {

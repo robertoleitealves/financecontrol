@@ -1,21 +1,30 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:financecontrol/constants/db_constants.dart';
+import 'package:financecontrol/model/user_model.dart';
 
-part 'user_auth_model.g.dart';
-
-@JsonSerializable()
 class UserAuthModel {
-  String nameUser;
-  String password;
-
+  int? id;
+  String? username;
+  String? password;
+  UserModel? user;
 
   UserAuthModel({
-    required this.nameUser,
-    required this.password,
-
+    this.id,
+    this.username,
+    this.password,
   });
 
-  factory UserAuthModel.fromJson(Map<String, dynamic> json) =>
-      _$UserAuthModelFromJson(json);
+  UserAuthModel.fromMapDB(Map<String, dynamic> json) {
+    id = json[authIdColumn];
+    username = json[authUsernameColumn];
+    password = json[authPasswordColumn];
+  }
 
-  Map<String, dynamic> toJson() => _$UserAuthModelToJson(this);
+  Map<String, dynamic> toMapDB() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data[authUsernameColumn] = username;
+    data[authIdColumn] = id;
+    data[authPasswordColumn] = password;
+
+    return data;
+  }
 }

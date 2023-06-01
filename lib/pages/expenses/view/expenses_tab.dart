@@ -163,7 +163,6 @@ class ExpensesTab extends StatelessWidget {
                                       child: GetBuilder<ExpensesController>(
                                           builder: (controller) {
                                         return DropdownButton<CreditCardModel>(
-                                          
                                             borderRadius:
                                                 BorderRadius.circular(16),
                                             hint:
@@ -175,8 +174,7 @@ class ExpensesTab extends StatelessWidget {
                                               return DropdownMenuItem<
                                                   CreditCardModel>(
                                                 value: credit,
-                                                child: Text(
-                                                    credit.nameCreditCard!),
+                                                child: Text(credit.name!),
                                               );
                                             }).toList(),
                                             value: _controller
@@ -214,8 +212,12 @@ class ExpensesTab extends StatelessWidget {
                                         icon: Icons.numbers),
                                     ElevatedButton(
                                         onPressed: () {
-                                          _controller.saveExpense();
-                                          _creditController.getCreditCard();
+                                          setState(() {
+                                            _controller.saveExpense();
+                                            Get.lazyPut(
+                                                () => CreditCardController());
+                                            // _creditController.getCreditCard();
+                                          });
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

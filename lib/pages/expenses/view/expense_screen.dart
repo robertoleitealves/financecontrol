@@ -56,8 +56,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       text: 'Forma de pagamento: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: _controller
-                          .selectedExpense.value.creditCard?.nameCreditCard),
+                      text: _controller.selectedExpense.value.creditCard?.name),
                 ],
               ),
               style: const TextStyle(fontSize: 16),
@@ -98,7 +97,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       onPressed: () {
                         setState(() {
                           _controller.deleteExpenseDb(
-                              _controller.selectedExpense.value.idExpense!);
+                              _controller.selectedExpense.value.id!);
                         });
 
                         // _controller.sumExpenses.value = _controller

@@ -52,7 +52,7 @@ class ExpensesController extends GetxController {
   }
 
   selectedCard(CreditCardModel cardSelect) {
-    idCredit = cardSelect.idCreditCard!;
+    idCredit = cardSelect.id!;
     creditSelected = cardSelect.obs;
   }
 
@@ -83,8 +83,8 @@ class ExpensesController extends GetxController {
 
   updateCreditCard(
       CreditCardModel creditCard, ExpensesModel expenseSelect) async {
-    newLimit = creditCard.avaliableLimitCard! - expenseSelect.purchaseValue!;
-    creditCard.avaliableLimitCard = newLimit;
+    newLimit = creditCard.avaliableLimit! - expenseSelect.purchaseValue!;
+    creditCard.avaliableLimit = newLimit;
     final result = await _repository.updateCreditCardDb(creditCard);
     // await creditCardController.getCreditCard();
     update();
@@ -94,7 +94,7 @@ class ExpensesController extends GetxController {
   Future<void> deleteExpenseDb(int expenseId) async {
     try {
       await _repository.deleteExpenseDb(expenseId);
-      listExpenses.removeWhere((expense) => expense.idExpense == expenseId);
+      listExpenses.removeWhere((expense) => expense.id == expenseId);
       utilsServices.showToast(message: 'Despesa excluída com sucesso!');
       final expenseValue = selectedExpense.value;
       await updateCreditCardDeleteExpenses(
@@ -112,9 +112,9 @@ class ExpensesController extends GetxController {
       int idCreditCard, ExpensesModel expense) async {
     CreditCardModel creditCard =
         await _repository.getCreditCardByCreditCardId(idCreditCard);
-    creditCard.avaliableLimitCard =
-        creditCard.avaliableLimitCard! + expense.purchaseValue!;
-    creditCard.qtExpenses = creditCard.qtExpenses! - 1;
+    creditCard.avaliableLimit =
+        creditCard.avaliableLimit! + expense.purchaseValue!;
+    creditCard.quantityExpenses = creditCard.quantityExpenses! - 1;
     final result = await _repository.updateCreditCardDb(creditCard);
     update();
     return result;
@@ -139,8 +139,9 @@ class ExpensesController extends GetxController {
       expenseModel.createdAt = DateTime.now().toString();
       expenseList.add(expenseModel);
       sumExpenses.value = sumExpenses.value + expenseModel.purchaseValue!;
-      creditSelected!.value.qtExpenses = creditSelected!.value.qtExpenses! + 1;
-      expenseModel.idExpense = await _repository.saveNewExpenseDB(expenseModel);
+      creditSelected!.value.quantityExpenses =
+          creditSelected!.value.quantityExpenses! + 1;
+      expenseModel.id = await _repository.saveNewExpenseDB(expenseModel);
       await updateCreditCard(creditSelected!.value, expenseModel);
 
       update();
@@ -153,9 +154,9 @@ class ExpensesController extends GetxController {
 
   void deleteExpense(ExpensesModel expense) async {
     try {
-      await _repository.deleteExpenseDb(expense.idExpense!);
-      listExpenses.removeWhere(
-          (expenseSelected) => expenseSelected.idExpense == expense.idExpense!);
+      await _repository.deleteExpenseDb(expense.id!);
+      listExpenses
+          .removeWhere((expenseSelected) => expenseSelected.id == expense.id!);
       utilsServices.showToast(message: 'Despesa excluída com sucesso!');
       await updateCreditCardDeleteExpenses(expense.idCreditCard!, expense);
       await getExpenses();

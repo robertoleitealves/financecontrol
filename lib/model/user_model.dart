@@ -4,6 +4,7 @@ import '../constants/db_constants.dart';
 class UserModel {
   int? idUser;
   String? name;
+  String? username;
   String? cpfNumber;
   String? birthdate;
   String? phoneNumber;
@@ -11,6 +12,7 @@ class UserModel {
 
   UserModel(
       {this.name,
+      this.username,
       this.cpfNumber,
       this.birthdate,
       this.phoneNumber,

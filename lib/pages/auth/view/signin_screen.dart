@@ -53,7 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     CustomTextField(
                       icon: Icons.person,
-                      label: 'Nome',
+                      label: 'username',
                       controller: _controller.nameLoginController,
                       onChanged: (value) {
                         setState(() {

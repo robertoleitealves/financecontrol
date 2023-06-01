@@ -51,9 +51,9 @@ class CreditCardController extends GetxController {
         await _repository.getCreditCardByUserIdDb(user.idUser!);
     creditList = listCreditCard;
     for (CreditCardModel credit in creditList) {
-      sum.value = sum.value + credit.avaliableLimitCard!;
+      sum.value = sum.value + credit.avaliableLimit!;
       listExpenses?.value =
-          await _repository.getExpensesByCreditCardId(credit.idCreditCard!);
+          await _repository.getExpensesByCreditCardId(credit.id!);
       credit.expenses = listExpenses;
       if (listExpenses != null) {
         qtExpenses = listExpenses!.length.obs;
@@ -61,9 +61,8 @@ class CreditCardController extends GetxController {
           qtExpenses = 0.obs;
         }
       } else {
-        qtExpenses = credit.qtExpenses!.obs;
+        qtExpenses = credit.quantityExpenses!.obs;
       }
-      
     }
 
     isLoading.value = false;
@@ -72,8 +71,8 @@ class CreditCardController extends GetxController {
 
   updateCreditCard(CreditCardModel creditCard) async {
     newLimit = double.parse(newLimitValueController.text);
-    creditCard.limitValueCard = newLimit;
-    creditCard.avaliableLimitCard = newLimit;
+    creditCard.limitValue = newLimit;
+    creditCard.avaliableLimit = newLimit;
     final result = await _repository.updateCreditCardDb(creditCard);
 
     await getCreditCard();
@@ -83,7 +82,7 @@ class CreditCardController extends GetxController {
 
   void onCreditCardSelect(CreditCardModel creditCard) async {
     selectedCreditCard.value = creditCard;
-    await _repository.getCreditCardByCreditId(creditCard.idCreditCard);
+    await _repository.getCreditCardByCreditId(creditCard.id);
 
     update();
   }
@@ -91,16 +90,16 @@ class CreditCardController extends GetxController {
   void saveCredit() async {
     if (creditFormKey.currentState!.validate()) {
       isLoading.value = true;
-      creditModel.nameCreditCard = nameCreditCardController.text.trim();
-      creditModel.limitValueCard = double.parse(limitValueController.text);
-      creditModel.avaliableLimitCard = double.parse(limitValueController.text);
+      creditModel.name = nameCreditCardController.text.trim();
+      creditModel.limitValue = double.parse(limitValueController.text);
+      creditModel.avaliableLimit = double.parse(limitValueController.text);
       creditModel.validateDate = validateDateController.text;
       user = await _repository.getUserModelDB();
       creditModel.user = user;
       creditModel.idUser = user.idUser;
-      creditModel.qtExpenses = 0;
-      creditModel.idCreditCard =
-          await _repository.saveNewCreditCardDB(creditModel);
+      creditModel.quantityExpenses = 0;
+      creditModel.id = await _repository.saveNewCreditCardDB(creditModel);
+      await getCreditCard();
 
       isLoading.value = false;
       update();
@@ -122,13 +121,13 @@ class CreditCardController extends GetxController {
   Future<void> deleteCreditCardDb(int creditCardId) async {
     try {
       await _repository.deleteCreditCardDb(creditCardId);
-      creditList.removeWhere((credit) => credit.idCreditCard == creditCardId);
+      creditList.removeWhere((credit) => credit.id == creditCardId);
       _utilsServices.showToast(message: 'Cartão excluído com sucesso!');
     } on Exception catch (e, s) {
       log('Erro ao deletar',
           name: 'deleteCreditCardDb', error: e, stackTrace: s);
     }
-    sum.value = sum.value - selectedCreditCard.value.avaliableLimitCard!;
+    sum.value = sum.value - selectedCreditCard.value.avaliableLimit!;
     update();
   }
 

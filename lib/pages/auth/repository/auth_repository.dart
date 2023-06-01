@@ -48,4 +48,6 @@ class AuthRepository {
     final result = await _helper.updateUserDb(user, cpfNumber);
     return result;
   }
+
+ 
 }
