@@ -154,24 +154,23 @@ CREATE TABLE $authUserTable (
   Future<UserModel> getUserDb() async {
     final result = await readData(table: userTable);
     UserModel response = UserModel.fromMapDB(result.first);
-
     return response;
   }
 
-  Future<CreditCardModel> getCreditCardByIdCreditCardDb(
-      int creditCardId) async {
-    final result = await readData(table: creditCardTable);
-    CreditCardModel response = CreditCardModel.fromMapDB(result.first);
-
-    return response;
-  }
-
-  Future signIn(String name, String password) async {
+  Future<UserModel> getUserByIdDb(int id) async {
     final result = await readData(
-        table: userTable,
-        where: '$userNameColumn = ? AND $userPasswordColumn = ?',
-        whereargs: [name, password]);
-    return result;
+        table: userTable, where: '$userIdColumn = ?', whereargs: [id]);
+    UserModel response = UserModel.fromMapDB(result);
+    return response;
+  }
+
+  Future<UserAuthModel> signIn(String username, String password) async {
+    final result = await readData(
+        table: authUserTable,
+        where: '$authUsernameColumn = ? AND $authPasswordColumn = ?',
+        whereargs: [username, password]);
+    UserAuthModel response = UserAuthModel.fromMapDB(result);
+    return response;
   }
 
   Future<int> updateUserDb(UserModel user, String cpfNumber) async {
@@ -180,7 +179,7 @@ CREATE TABLE $authUserTable (
     return result;
   }
 
-  // CREDIT CARDS
+  // CREDITCARDS
   Future<int> insertCreditCardsDb(List<CreditCardModel> values) async {
     Database myDb = await db;
     Batch batch = myDb.batch();
@@ -191,6 +190,14 @@ CREATE TABLE $authUserTable (
 
     await batch.commit(noResult: true);
     return 1;
+  }
+
+  Future<CreditCardModel> getCreditCardByIdCreditCardDb(
+      int creditCardId) async {
+    final result = await readData(table: creditCardTable);
+    CreditCardModel response = CreditCardModel.fromMapDB(result.first);
+
+    return response;
   }
 
   Future<List<CreditCardModel>> getCreditCardListDb() async {
@@ -295,7 +302,7 @@ CREATE TABLE $authUserTable (
 
   Future<int> updateExpenseDb(ExpensesModel expense) async {
     final result = await updateData(expensesTable, expense.toMapDB(),
-        where: '$expenseIdColumn = ?', args: [expense.id!]);
+        where: '$expenseIdColumn = ?', args: [expense.id]);
     return result;
   }
 
@@ -304,7 +311,7 @@ CREATE TABLE $authUserTable (
     expenseList.removeWhere((expenses) => expenses.id != creditCardId);
     var qtde = 0;
     for (ExpensesModel expense in expenseList) {
-      await deleteExpensesDb(expense.id!);
+      await deleteExpensesDb(expense.id);
       qtde++;
     }
     return qtde;

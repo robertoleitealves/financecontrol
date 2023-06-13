@@ -51,39 +51,64 @@ class _SignInScreenState extends State<SignInScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CustomTextField(
-                      icon: Icons.person,
-                      label: 'username',
-                      controller: _controller.nameLoginController,
-                      onChanged: (value) {
-                        setState(() {
-                          _controller.nameLogin =
-                              _controller.nameLoginController.text;
-                        });
-                      },
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomTextField(
-                      icon: Icons.lock,
-                      label: 'Senha',
-                      controller: _controller.passwordLoginController,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      onChanged: (value) {
-                        setState(() {
-                          _controller.passwordLogin =
-                              _controller.passwordLoginController.text;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
+                    Form(
+                      key: _controller.formLoginKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            icon: Icons.person,
+                            label: 'username',
+                            controller: _controller.nameLoginController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo obrigatório';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _controller.usernameLogin =
+                                    _controller.nameLoginController.text;
+                              });
+                            },
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomTextField(
+                            icon: Icons.lock,
+                            label: 'Senha',
+                            controller: _controller.passwordLoginController,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo obrigatório';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _controller.passwordLogin =
+                                    _controller.passwordLoginController.text;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        _controller.signIn();
+                        if (_controller.formLoginKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Carregando...')));
+                          _controller.signIn();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: CustomColors.customSwatchColor,

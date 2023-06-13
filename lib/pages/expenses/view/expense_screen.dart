@@ -30,7 +30,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                _controller.selectedExpense.value.market!,
+                _controller.selectedExpense!.value.market,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -44,7 +44,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                   const TextSpan(
                       text: 'Dia: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(text: _controller.selectedExpense.value.createdAt),
+                  TextSpan(text: _controller.selectedExpense!.value.createdAt),
                 ],
               ),
               style: const TextStyle(fontSize: 16),
@@ -56,7 +56,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       text: 'Forma de pagamento: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: _controller.selectedExpense.value.creditCard?.name),
+                      text: _controller.selectedExpense!.value.creditCard.name),
                 ],
               ),
               style: const TextStyle(fontSize: 16),
@@ -68,7 +68,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       text: 'Parcelas: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: _controller.selectedExpense.value.installments
+                      text: _controller.selectedExpense!.value.installments
                           .toString())
                 ],
               ),
@@ -83,7 +83,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                        text: _controller.selectedExpense.value.purchaseValue
+                        text: _controller.selectedExpense!.value.purchaseValue
                             .toString())
                   ],
                 ),
@@ -92,12 +92,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: _controller.selectedExpense.value.installments! <= 1
+              child: _controller.selectedExpense!.value.installments <= 1
                   ? ElevatedButton(
                       onPressed: () {
                         setState(() {
                           _controller.deleteExpenseDb(
-                              _controller.selectedExpense.value.id!);
+                              _controller.selectedExpense!.value.id);
                         });
 
                         // _controller.sumExpenses.value = _controller
@@ -117,8 +117,8 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                   : ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          _controller
-                              .slaughterplot(_controller.selectedExpense.value);
+                          _controller.slaughterplot(
+                              _controller.selectedExpense!.value);
                         });
                       },
                       style: ElevatedButton.styleFrom(

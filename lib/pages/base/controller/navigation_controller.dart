@@ -2,20 +2,16 @@
 import 'package:flutter/material.dart';
 // PACKAGE
 import 'package:get/get.dart';
-// import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
 
 abstract class NavigationTabs {
   static const int home = 0;
-  static const int cart = 1;
-  static const int orders = 2;
-  static const int profile = 3;
+  static const int profile = 1;
 }
 
 class NavigationController extends GetxController {
   late PageController _pageController;
   late RxInt _currentIndex;
-
-  // PersistentTabController controller = PersistentTabController();
 
   PageController get pageController => _pageController;
   int get currentIndex => _currentIndex.value;
@@ -23,7 +19,7 @@ class NavigationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    
+
     _initNavigation(
       pageController: PageController(initialPage: NavigationTabs.home),
       currentIndex: NavigationTabs.home,

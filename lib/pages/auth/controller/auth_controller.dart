@@ -1,3 +1,4 @@
+import 'package:financecontrol/model/user_auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,8 +8,7 @@ import '../../../routes/app_routes.dart';
 import '../../../services/utils_services.dart';
 
 import '../../base/controller/navigation_controller.dart';
-import '../../creditcard/controller/creditcard_controller.dart';
-import '../../expenses/controller/expenses_controller.dart';
+
 import '../repository/auth_repository.dart';
 import '../result/auth_result.dart';
 
@@ -19,11 +19,13 @@ class AuthController extends GetxController {
   final authRepository = AuthRepository();
   final utilServices = UtilsServices();
   final TextEditingController nameLoginController = TextEditingController();
-  String? nameLogin;
+  String? usernameLogin;
   String? passwordLogin;
   final TextEditingController passwordLoginController = TextEditingController();
-  UserModel user = UserModel();
-  final formLoginKey = FormKey();
+  UserModel? user;
+  UserAuthModel? authUser;
+  final formLoginKey = GlobalKey<FormState>();
+  final formSignUpKey = GlobalKey<FormState>();
 
   // SIGNUP CONTROLLERS
   final passwordController = TextEditingController();
@@ -35,27 +37,9 @@ class AuthController extends GetxController {
   final birthdateController = TextEditingController();
   final cpfSignUpController = TextEditingController();
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   // validateToken();
-  // }
-
-  // QUANDO INICIALIZAR O APLICATIVO FAZ A VERIFICAÇÃO
-  // Future<void> validateToken() async {
-  //   // Recuperar o token que foi salvo localmente
-  //   String? token = await utilServices.getLocalData(key: StorageKeys.token);
-  //   if (token == null) {
-  //     Get.offAllNamed(PagesRoute.signInRoute);
-  //     return;
-  //   } else {
-  //     loadData();
-  //   }
-  // }
-
   loadData() async {
-    Get.lazyPut(() => ExpensesController());
-    Get.lazyPut(() => CreditCardController());
+    // Get.lazyPut(() => ExpensesController());
+    // Get.lazyPut(() => CreditCardController());
     Get.lazyPut(() => NavigationController());
   }
 
@@ -86,17 +70,23 @@ class AuthController extends GetxController {
   // CADASTRAR USUÁRIO
   Future<void> signUp() async {
     isLoading.value = true;
-    user.cpfNumber = cpfSignUpController.text;
-    user.username = usernameSignUpController.text;
-    user.birthdate = birthdateController.text;
-    user.name = nameSignUpController.text;
-    user.password = passwordSignUpController.text;
-    user.phoneNumber = phoneNumberController.text;
-    AuthResult result = await authRepository.signUp(user);
+    user = UserModel(
+      name: nameSignUpController.text,
+      cpfNumber: cpfSignUpController.text,
+      birthdate: birthdateController.text,
+      username: usernameSignUpController.text,
+      password: passwordSignUpController.text,
+      phoneNumber: phoneNumberController.text,
+    );
+    authUser = UserAuthModel(
+      username: usernameSignUpController.text,
+      password: passwordSignUpController.text,
+    );
+    AuthResult result = await authRepository.signUp(user!, authUser!);
+
     result.when(
       success: (authResponse) async {
         clearAuthController();
-
         utilServices.showToast(
             message: "Conta criada e logada com sucesso!", isSuccess: true);
         await loadData();
@@ -114,18 +104,19 @@ class AuthController extends GetxController {
   // LOGAR USUÁRIO
   Future<void> signIn() async {
     isLoading.value = true;
-    nameLogin = nameLoginController.text;
+    usernameLogin = nameLoginController.text;
     passwordLogin = passwordLoginController.text;
-    AuthResult result = await authRepository.signin(
-        nameUser: nameLogin!, password: passwordLogin!);
+    final result = await authRepository.signin(
+        username: usernameLogin!, password: passwordLogin!);
+    
     isLoading.value = false;
     result.when(
       success: (authResponse) async {
         try {
-          user = UserModel.fromMapDB(authResponse);
+          authUser = authResponse.first;
+          user = await authRepository.getUserById(authResponse.user.id);
           nameLoginController.clear();
           passwordLoginController.clear();
-
           await loadData();
           Get.toNamed(PagesRoute.baseRoute);
         } catch (err) {
@@ -161,11 +152,11 @@ class AuthController extends GetxController {
 
   // FINALIZE USER
   void finalizeUserModel() {
-    user.password = passwordController.text;
-    user.name = nameSignUpController.text;
-    user.phoneNumber = phoneNumberController.text;
-    user.birthdate = birthdateController.text;
-    user.cpfNumber = cpfSignUpController.text;
+    user!.password = passwordController.text;
+    user!.name = nameSignUpController.text;
+    user!.phoneNumber = phoneNumberController.text;
+    user!.birthdate = birthdateController.text;
+    user!.cpfNumber = cpfSignUpController.text;
 
     signUp();
   }

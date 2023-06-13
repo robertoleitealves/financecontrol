@@ -2,7 +2,7 @@
 import '../constants/db_constants.dart';
 
 class UserModel {
-  int? idUser;
+  int? id;
   String? name;
   String? username;
   String? cpfNumber;
@@ -19,8 +19,9 @@ class UserModel {
       this.password});
 
   UserModel.fromMapDB(Map<String, dynamic> json) {
-    idUser = json[userIdColumn];
+    id = json[userIdColumn];
     name = json[userNameColumn];
+    username = json[userUsernameColumn];
     cpfNumber = json[userCpfColumn];
     birthdate = json[userBirthdateColumn];
     phoneNumber = json[userPhoneColumn];
@@ -29,7 +30,9 @@ class UserModel {
 
   Map<String, dynamic> toMapDB() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data[userIdColumn] = id;
     data[userNameColumn] = name;
+    data[userUsernameColumn] = username;
     data[userCpfColumn] = cpfNumber;
     data[userBirthdateColumn] = birthdate;
     data[userPhoneColumn] = phoneNumber;

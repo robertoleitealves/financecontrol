@@ -7,25 +7,25 @@ import '../constants/db_constants.dart';
 
 // ignore: must_be_immutable
 class ExpensesModel {
-  int? id;
-  String? market;
-  String? createdAt;
-  int? idCreditCard;
-  CreditCardModel? creditCard;
-  int? idUser;
-  UserModel? user;
-  int? installments; //QTDE PARCELAS
-  double? purchaseValue; //VALOR DA COMPRA
+  late int id;
+  late String market;
+  late String createdAt;
+  late int idCreditCard;
+  late CreditCardModel creditCard;
+  late int idUser;
+  late UserModel user;
+  int installments = 1; //QTDE PARCELAS
+  double purchaseValue = 0.00; //VALOR DA COMPRA
   ExpensesModel({
-    this.id,
-    this.market,
-    this.createdAt,
-    this.idCreditCard,
-    this.creditCard,
-    this.idUser,
-    this.user,
-    this.installments,
-    this.purchaseValue,
+    required this.id,
+    required this.market,
+    required this.createdAt,
+    required this.idCreditCard,
+    required this.creditCard,
+    required this.idUser,
+    required this.user,
+    required this.installments,
+    required this.purchaseValue,
   });
 
   @override

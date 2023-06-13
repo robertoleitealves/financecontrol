@@ -20,7 +20,7 @@ class CreditCardController extends GetxController {
   RxList<CreditCardModel> creditList = <CreditCardModel>[].obs;
   RxList<CreditCardModel> listCreditCard = <CreditCardModel>[].obs;
   RxList<ExpensesModel>? listExpenses;
-  final Rx<CreditCardModel> selectedCreditCard = CreditCardModel().obs;
+  Rx<CreditCardModel>? selectedCreditCard;
   final RxBool isLoading = false.obs;
   RxDouble sum = 0.00.obs;
   double newLimit = 0.00;
@@ -34,21 +34,21 @@ class CreditCardController extends GetxController {
   final TextEditingController limitValueController = TextEditingController();
   final TextEditingController newLimitValueController = TextEditingController();
   final TextEditingController validateDateController = TextEditingController();
-  CreditCardModel creditModel = CreditCardModel();
+  CreditCardModel? creditModel;
   final creditFormKey = GlobalKey<FormState>();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     getCreditCard();
+    // user = await _repository.getUserModelDB();
   }
 
   getCreditCard() async {
     isLoading.value = true;
     sum = 0.00.obs;
-    user = await _repository.getUserModelDB();
-    listCreditCard.value =
-        await _repository.getCreditCardByUserIdDb(user.idUser!);
+    // user = await _repository.getUserModelDB();
+    listCreditCard.value = await _repository.getCreditCardByUserIdDb(user.id!);
     creditList = listCreditCard;
     for (CreditCardModel credit in creditList) {
       sum.value = sum.value + credit.avaliableLimit!;
@@ -81,7 +81,7 @@ class CreditCardController extends GetxController {
   }
 
   void onCreditCardSelect(CreditCardModel creditCard) async {
-    selectedCreditCard.value = creditCard;
+    selectedCreditCard?.value = creditCard;
     await _repository.getCreditCardByCreditId(creditCard.id);
 
     update();
@@ -90,15 +90,17 @@ class CreditCardController extends GetxController {
   void saveCredit() async {
     if (creditFormKey.currentState!.validate()) {
       isLoading.value = true;
-      creditModel.name = nameCreditCardController.text.trim();
-      creditModel.limitValue = double.parse(limitValueController.text);
-      creditModel.avaliableLimit = double.parse(limitValueController.text);
-      creditModel.validateDate = validateDateController.text;
-      user = await _repository.getUserModelDB();
-      creditModel.user = user;
-      creditModel.idUser = user.idUser;
-      creditModel.quantityExpenses = 0;
-      creditModel.id = await _repository.saveNewCreditCardDB(creditModel);
+      creditModel = CreditCardModel(
+        idUser: user.id!,
+        name: nameCreditCardController.text,
+        limitValue: double.parse(limitValueController.text),
+        avaliableLimit: double.parse(limitValueController.text),
+        validateDate: validateDateController.text,
+        user: user,
+        quantityExpenses: 0,
+        id: await _repository.saveNewCreditCardDB(creditModel!),
+      );
+
       await getCreditCard();
 
       isLoading.value = false;
@@ -127,7 +129,7 @@ class CreditCardController extends GetxController {
       log('Erro ao deletar',
           name: 'deleteCreditCardDb', error: e, stackTrace: s);
     }
-    sum.value = sum.value - selectedCreditCard.value.avaliableLimit!;
+    sum.value = sum.value - selectedCreditCard!.value.avaliableLimit!;
     update();
   }
 

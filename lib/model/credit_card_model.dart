@@ -17,8 +17,8 @@ class CreditCardModel {
   UserModel? user;
   String? name;
   String? validateDate;
-  double? limitValue; //LIMITE TOTAL
-  double? avaliableLimit; //LIMITE DISPONÍVEL
+  double? limitValue = 0.00; //LIMITE TOTAL
+  double? avaliableLimit = 0.00; //LIMITE DISPONÍVEL
   List<ExpensesModel>? expenses;
   CreditCardModel({
     this.id,
@@ -31,10 +31,11 @@ class CreditCardModel {
     this.avaliableLimit,
     this.expenses,
   });
+ 
 
   @override
   String toString() {
-    return 'CreditCardModel(idCreditCard: $id, idUser: $idUser, qtExpenses: $quantityExpenses, user: $user, nameCreditCard: $name, validateDate: $validateDate, limitValueCard: $limitValue, avaliableLimitCard: $avaliableLimit, expenses: $expenses)';
+    return 'CreditCardModel(id: $id, idUser: $idUser, quantityExpenses: $quantityExpenses, user: $user, name: $name, validateDate: $validateDate, limitValue: $limitValue, avaliableLimit: $avaliableLimit, expenses: $expenses)';
   }
 
   Map<String, dynamic> toMapDB() {

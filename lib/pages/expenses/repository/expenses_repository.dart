@@ -12,7 +12,7 @@ class ExpensesRepository {
   final _helper = DatabaseProvider();
   final _authController = Get.find<AuthController>();
 
-  Future<UserModel> getUserModelDB() async {
+  Future<UserModel> getUserModelDB(String username) async {
     return await _helper.getUserDb();
   }
 
@@ -27,7 +27,7 @@ class ExpensesRepository {
   Future<List<CreditCardModel>> getCreditCardByUserIdDb(int userId) async {
     try {
       final result =
-          await _helper.getCreditCardByIdUserDb(_authController.user.idUser!);
+          await _helper.getCreditCardByIdUserDb(_authController.user!.id!);
       if (result.isNotEmpty) {
         return result;
       } else {
@@ -69,7 +69,7 @@ class ExpensesRepository {
   Future<List<ExpensesModel>> getExpensesByUserIdDb(int userId) async {
     try {
       final result =
-          await _helper.getExpensesByIdUserDb(_authController.user.idUser!);
+          await _helper.getExpensesByIdUserDb(_authController.user!.id!);
       if (result.isNotEmpty) {
         return result;
       } else {

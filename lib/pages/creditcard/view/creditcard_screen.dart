@@ -21,7 +21,7 @@ class CreditCardScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                _controller.selectedCreditCard.value.name!,
+                _controller.selectedCreditCard!.value.name!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class CreditCardScreen extends StatelessWidget {
                       text: 'Limite total: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: _controller.selectedCreditCard.value.limitValue
+                      text: _controller.selectedCreditCard!.value.limitValue
                           .toString()),
                 ],
               ),
@@ -61,7 +61,7 @@ class CreditCardScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(
-                      text: _controller.selectedCreditCard.value.avaliableLimit
+                      text: _controller.selectedCreditCard!.value.avaliableLimit
                           .toString())
                 ],
               ),
@@ -104,7 +104,7 @@ class CreditCardScreen extends StatelessWidget {
                               ElevatedButton(
                                   onPressed: () {
                                     _controller.updateCreditCard(
-                                        _controller.selectedCreditCard.value);
+                                        _controller.selectedCreditCard!.value);
                                     Get.back();
                                     Get.back();
                                   },
@@ -178,7 +178,7 @@ class CreditCardScreen extends StatelessWidget {
                             ElevatedButton(
                                 onPressed: () {
                                   _controller.deleteCreditCardDb(
-                                      _controller.selectedCreditCard.value.id!);
+                                      _controller.selectedCreditCard!.value.id!);
                                   Get.back();
                                   Get.back();
                                 },

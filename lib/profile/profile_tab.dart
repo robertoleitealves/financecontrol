@@ -35,7 +35,7 @@ class ProfileTab extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: _controller.user.name,
+                    text: _controller.user!.name,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   )
@@ -50,7 +50,7 @@ class ProfileTab extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: _controller.user.birthdate,
+                    text: _controller.user!.birthdate,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   )
@@ -65,7 +65,7 @@ class ProfileTab extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: _controller.user.cpfNumber,
+                    text: _controller.user!.cpfNumber,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   )
@@ -80,7 +80,7 @@ class ProfileTab extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   TextSpan(
-                    text: _controller.user.phoneNumber,
+                    text: _controller.user!.phoneNumber,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18),
                   )

@@ -21,7 +21,7 @@ class ExpensesController extends GetxController {
   RxList<ExpensesModel> listExpenses = <ExpensesModel>[].obs;
   RxList<CreditCardModel> listCreditCard = <CreditCardModel>[].obs;
   final RxList<CreditCardModel> creditCardList = <CreditCardModel>[].obs;
-  Rx<ExpensesModel> selectedExpense = ExpensesModel().obs;
+  Rx<ExpensesModel>? selectedExpense;
   UserModel user = UserModel();
 
   //CADASTRO DE DESPESAS
@@ -32,7 +32,7 @@ class ExpensesController extends GetxController {
   Rx<CreditCardModel>? creditSelected;
   Rx<ExpensesModel>? expense;
   RxList<ExpensesModel> expenseList = <ExpensesModel>[].obs;
-  ExpensesModel expenseModel = ExpensesModel();
+  ExpensesModel? expenseModel;
   RxDouble sumExpenses = 0.00.obs;
   int? idCredit;
   double newLimit = 0.00;
@@ -59,13 +59,13 @@ class ExpensesController extends GetxController {
   getExpenses() async {
     isLoading.value = true;
     sumExpenses = 0.00.obs;
-    user = await _repository.getUserModelDB();
-    listExpenses.value = await _repository.getExpensesByUserIdDb(user.idUser!);
+    // user = await _repository.getUserModelDB();
+    listExpenses.value = await _repository.getExpensesByUserIdDb(user.id!);
     expenseList = listExpenses;
     for (ExpensesModel expense in expenseList) {
-      sumExpenses.value = sumExpenses.value + expense.purchaseValue!;
+      sumExpenses.value = sumExpenses.value + expense.purchaseValue;
       expense.creditCard =
-          await _repository.getCreditCardByCreditCardId(expense.idCreditCard!);
+          await _repository.getCreditCardByCreditCardId(expense.idCreditCard);
     }
 
     isLoading.value = false;
@@ -74,16 +74,16 @@ class ExpensesController extends GetxController {
 
   void onExpenseSelect(ExpensesModel expense) async {
     isLoading.value = true;
-    selectedExpense.value = expense;
-    selectedExpense.value.creditCard =
-        await _repository.getCreditCardByCreditCardId(expense.idCreditCard!);
+    selectedExpense?.value = expense;
+    selectedExpense?.value.creditCard =
+        await _repository.getCreditCardByCreditCardId(expense.idCreditCard);
     isLoading.value = false;
     update();
   }
 
   updateCreditCard(
       CreditCardModel creditCard, ExpensesModel expenseSelect) async {
-    newLimit = creditCard.avaliableLimit! - expenseSelect.purchaseValue!;
+    newLimit = creditCard.avaliableLimit! - expenseSelect.purchaseValue;
     creditCard.avaliableLimit = newLimit;
     final result = await _repository.updateCreditCardDb(creditCard);
     // await creditCardController.getCreditCard();
@@ -96,9 +96,9 @@ class ExpensesController extends GetxController {
       await _repository.deleteExpenseDb(expenseId);
       listExpenses.removeWhere((expense) => expense.id == expenseId);
       utilsServices.showToast(message: 'Despesa excluída com sucesso!');
-      final expenseValue = selectedExpense.value;
+      final expenseValue = selectedExpense?.value;
       await updateCreditCardDeleteExpenses(
-          selectedExpense.value.idCreditCard!, expenseValue);
+          selectedExpense!.value.idCreditCard, expenseValue!);
 
       update();
       Get.back();
@@ -113,7 +113,7 @@ class ExpensesController extends GetxController {
     CreditCardModel creditCard =
         await _repository.getCreditCardByCreditCardId(idCreditCard);
     creditCard.avaliableLimit =
-        creditCard.avaliableLimit! + expense.purchaseValue!;
+        creditCard.avaliableLimit! + expense.purchaseValue;
     creditCard.quantityExpenses = creditCard.quantityExpenses! - 1;
     final result = await _repository.updateCreditCardDb(creditCard);
     update();
@@ -121,7 +121,7 @@ class ExpensesController extends GetxController {
   }
 
   void slaughterplot(ExpensesModel expense) async {
-    expense.installments = expense.installments! - 1;
+    expense.installments = expense.installments - 1;
     await _repository.updateExpenseDb(expense);
     update();
   }
@@ -129,20 +129,20 @@ class ExpensesController extends GetxController {
   void saveExpense() async {
     if (expenseFormKey.currentState!.validate()) {
       isLoading.value = true;
-      expenseModel.market = marketController.text;
-      expenseModel.purchaseValue = double.parse(purchaseController.text);
-      expenseModel.installments = int.parse(installmentsController.text);
-      expenseModel.creditCard = creditSelected!.value;
-      expenseModel.idCreditCard = idCredit;
-      expenseModel.user = await _repository.getUserModelDB();
-      expenseModel.idUser = expenseModel.user?.idUser;
-      expenseModel.createdAt = DateTime.now().toString();
-      expenseList.add(expenseModel);
-      sumExpenses.value = sumExpenses.value + expenseModel.purchaseValue!;
+      expenseModel?.market = marketController.text;
+      expenseModel?.purchaseValue = double.parse(purchaseController.text);
+      expenseModel?.installments = int.parse(installmentsController.text);
+      expenseModel?.creditCard = creditSelected!.value;
+      expenseModel?.idCreditCard = idCredit!;
+      // expenseModel?.user = await _repository.getUserModelDB();
+      expenseModel?.idUser = expenseModel!.user.id!;
+      expenseModel?.createdAt = DateTime.now().toString();
+      expenseList.add(expenseModel!);
+      sumExpenses.value = sumExpenses.value + expenseModel!.purchaseValue;
       creditSelected!.value.quantityExpenses =
           creditSelected!.value.quantityExpenses! + 1;
-      expenseModel.id = await _repository.saveNewExpenseDB(expenseModel);
-      await updateCreditCard(creditSelected!.value, expenseModel);
+      expenseModel?.id = await _repository.saveNewExpenseDB(expenseModel!);
+      await updateCreditCard(creditSelected!.value, expenseModel!);
 
       update();
       isLoading.value = false;
@@ -154,11 +154,11 @@ class ExpensesController extends GetxController {
 
   void deleteExpense(ExpensesModel expense) async {
     try {
-      await _repository.deleteExpenseDb(expense.id!);
+      await _repository.deleteExpenseDb(expense.id);
       listExpenses
-          .removeWhere((expenseSelected) => expenseSelected.id == expense.id!);
+          .removeWhere((expenseSelected) => expenseSelected.id == expense.id);
       utilsServices.showToast(message: 'Despesa excluída com sucesso!');
-      await updateCreditCardDeleteExpenses(expense.idCreditCard!, expense);
+      await updateCreditCardDeleteExpenses(expense.idCreditCard, expense);
       await getExpenses();
     } on Exception catch (e, s) {
       log('Erro ao deletar',

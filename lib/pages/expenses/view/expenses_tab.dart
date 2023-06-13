@@ -49,7 +49,7 @@ class ExpensesTab extends StatelessWidget {
                                         return ListTile(
                                           title: Text(
                                             _controller
-                                                .expenseList[index].market!,
+                                                .expenseList[index].market,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16),
@@ -78,7 +78,7 @@ class ExpensesTab extends StatelessWidget {
                                                                         16)),
                                                     child: ExpenseScreen(
                                                       expense: _controller
-                                                          .selectedExpense
+                                                          .selectedExpense!
                                                           .value,
                                                     )),
                                               ),
